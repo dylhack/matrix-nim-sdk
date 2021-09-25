@@ -1,5 +1,5 @@
 import asyncdispatch except fail
-import nimtrix
+import matrix
 import os
 import unittest
 

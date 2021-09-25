@@ -1,7 +1,7 @@
 import unittest
 import strformat
-import "nimtrix/core/endutils"
-import "nimtrix/client/endpoints"
+import "matrix/core/endutils"
+import "matrix/client/endpoints"
 
 const server = "https://newcircuit.io"
 
