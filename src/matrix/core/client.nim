@@ -13,6 +13,9 @@ type
 func setToken*(client: MatrixClient, token: string): void =
   client.http.headers["Authorization"] = fmt"Bearer {token}"
 
+func dropToken*(client: MatrixClient): void =
+  client.http.headers.del("Authorization")
+
 proc getHttpCl(): AsyncHttpClient =
   return newAsyncHttpClient(
     headers = newHttpHeaders({"Content-Type": "application/json"})
