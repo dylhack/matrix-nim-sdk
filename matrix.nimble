@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.1.6.1"
+version       = "0.1.0"
 author        = "Dylan Hackworth"
 description   = "A Matrix (https://matrix.org) client and appservice API wrapper for Nim!"
 license       = "GPL-3.0-only"
