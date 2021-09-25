@@ -118,10 +118,10 @@ const
 
   ## 10.5 Listing rooms
   ## https://matrix.org/docs/spec/client_server/r0.6.1#listing-rooms
-  roomVisibilityGet* = newClDraft("GET /directory/list/room/%roomId", HttpGet)
-  roomVisibilityPut* = newClDraft("PUT /directory/list/room/%roomId", HttpPut)
-  publicRoomsGet* = newClDraft("GET /publicRooms", HttpGet)
-  publicRoomsPut* = newClDraft("POST /publicRooms", HttpPost)
+  roomVisibilityGet* = newClDraft("/directory/list/room/%roomId", HttpGet)
+  roomVisibilityPut* = newClDraft("/directory/list/room/%roomId", HttpPut)
+  publicRoomsGet* = newClDraft("/publicRooms", HttpGet)
+  publicRoomsPut* = newClDraft("/publicRooms", HttpPost)
 
 
 
