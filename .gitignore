@@ -1,3 +1,5 @@
-###Nim###
+###Project Specific###
+tests.env
 
+###Nim###
 nimcache/

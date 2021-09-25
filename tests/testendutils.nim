@@ -1,6 +1,6 @@
 import unittest
 import strformat
-import "nimtrix/endutils"
+import "nimtrix/core/endutils"
 import "nimtrix/client/endpoints"
 
 const server = "https://newcircuit.io"
@@ -18,7 +18,7 @@ test "can build param based endpoint":
     "/_matrix/client/r0/user/%40dylhack%3Anewcircuit.io/filter/1"
   )
   let endpoint = filterGet.build(
-    server, 
+    server,
     ("userId", "@dylhack:newcircuit.io"), ("filterId", "1")
   )
   check ($endpoint == expected)

@@ -1,26 +1,28 @@
 from strformat import fmt
 from httpcore import HttpMethod
-import "nimtrix/endutils"
+import "../core/endutils"
 
 const prefix = "/_matrix/client/r0"
 
 func newClDraft(endpoint: string, `method`: HttpMethod): EndpointDraft =
   ## Create new Client-Server API endpoint draft
-  return newDraft fmt"{prefix}{endpoint}", `method`
+  return newDraft(fmt"{prefix}{endpoint}", `method`)
 
 const
   # -------------------------- 05 Client Authentication --------------------- #
   ## https://matrix.org/docs/spec/client_server/r0.6.1#client-authentication
   ## 5.5 Login Endpoints
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#login 
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#login
   loginGet* = newClDraft("/login", HttpGet)
   loginSubmit* = newClDraft("/login", HttpPost)
+  logout* = newClDraft("/logout", HttpPost)
+  logoutAll* = newClDraft("/logout/all", HttpPost)
 
   ## 5.6 Account registration and management
   ## https://matrix.org/docs/spec/client_server/r0.6.1#account-registration-and-management
   accountRegister* = newClDraft("/register", HttpPost)
-  accountAvailability* = newClDraft("/register/available", HttpGet) 
-  accountPassword* = newClDraft("/account/password", HttpPost) 
+  accountAvailability* = newClDraft("/register/available", HttpGet)
+  accountPassword* = newClDraft("/account/password", HttpPost)
   accountDeactivate* = newClDraft("/account/deactivate", HttpPost)
 
   ## 5.7 Adding Account Administrative Contact Information
@@ -41,17 +43,17 @@ const
 
   ## 8 Filtering
   ## https://matrix.org/docs/spec/client_server/r0.6.1#filtering
-  filterGet* = newClDraft("/user/%userId/filter/%filterId", HttpGet) 
+  filterGet* = newClDraft("/user/%userId/filter/%filterId", HttpGet)
   filterSubmit* = newClDraft("/user/%userId/filter", HttpPost)
 
 
 
-  # -------------------------- 09 Events ------------------------------------ #
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#events 
+  # -------------------------- 09 Events ---------------------------------- #
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#events
 
   ## 9.4 Syncing
   ## https://matrix.org/docs/spec/client_server/r0.6.1#syncing
-  sync* = newClDraft("/sync", HttpGet)
+  Sync* = newClDraft("/sync", HttpGet)
 
   ## 9.5 Getting events for a room
   ## https://matrix.org/docs/spec/client_server/r0.6.1#getting-events-for-a-room
@@ -65,7 +67,7 @@ const
   roomMessagesGet* = newClDraft("/rooms/%roomId/messages", HttpGet)
 
   ## 9.6 Sending events to a room
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#sending-events-to-a-room 
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#sending-events-to-a-room
   roomStateEventPut* = newClDraft(
     "/rooms/%roomId/state/%eventType/%stateKey",
     HttpPut)
@@ -81,8 +83,8 @@ const
 
 
 
-  # -------------------------- 10 Rooms ------------------------------------- #
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#rooms 
+  # -------------------------- 10 Rooms ----------------------------------- #
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#rooms
   ## 10.1 Creation
   roomCreate* = newClDraft("/createRoom", HttpPost)
 
@@ -94,8 +96,8 @@ const
   roomAliasesGet* = newClDraft("/rooms/%roomId/aliases", HttpGet)
 
   ## 10.4 Room membership
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#room-membership 
-  joinedRoomsGet* = newClDraft("/joined_rooms", HttpGet) 
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#room-membership
+  joinedRoomsGet* = newClDraft("/joined_rooms", HttpGet)
 
   ## 10.4.2 Joining rooms
   ## https://matrix.org/docs/spec/client_server/r0.6.1#joining-rooms
@@ -123,7 +125,7 @@ const
 
 
 
-  # -------------------------- 11 User Data --------------------------------- #
+  # -------------------------- 11 User Data ------------------------------- #
   ## https://matrix.org/docs/spec/client_server/r0.6.1#user-data
   ## 11.1 User Directory
   ## https://matrix.org/docs/spec/client_server/r0.6.1#user-directory
@@ -139,14 +141,14 @@ const
 
 
 
-  # -------------------------- 13 Modules ----------------------------------- #
+  # -------------------------- 13 Modules --------------------------------- #
   ## https://matrix.org/docs/spec/client_server/r0.6.1#modules
 
-  ## 13.3.3 TURN Server behaviour 
-  ## https://matrix.org/docs/spec/client_server/r0.6.1#id47 
+  ## 13.3.3 TURN Server behaviour
+  ## https://matrix.org/docs/spec/client_server/r0.6.1#id47
   turnServerGet* = newClDraft("/voip/turnServer", HttpGet)
 
-  ## 13.4.2 Typing Client behaviour 
+  ## 13.4.2 Typing Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id51
   typingPut* = newClDraft("/rooms/{roomId}/typing/{userId}", HttpPut)
 
@@ -184,7 +186,7 @@ const
   deviceDelete* = newClDraft("/devices/%deviceId", HttpDelete)
   devicesDelete* = newClDraft("/delete_devices ", HttpPost)
 
-  ## 13.11.5.2 End-to-End Encryption Key management API  
+  ## 13.11.5.2 End-to-End Encryption Key management API
   ## https://matrix.org/docs/spec/client_server/r0.6.1#key-management-api
   keyUpload* = newClDraft("/keys/upload", HttpPost)
   keyQuery* = newClDraft("/keys/query", HttpPost)
@@ -218,7 +220,7 @@ const
   pushRulesActionsPut* = newClDraft(
     "/pushrules/%scope/%kind/%ruleId/actions",
     HttpPut)
- 
+
   ## 13.14.2 Third Party Invites Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id100
   memberInviteThirdParty* = newClDraft("/rooms/%roomId/invite", HttpPost)
@@ -258,11 +260,11 @@ const
 
   ## 13.21.1 Event Context Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id132
-  eventContextGet* = newClDraft("/rooms/%roomId/context/%eventId", HttpGet) 
+  eventContextGet* = newClDraft("/rooms/%roomId/context/%eventId", HttpGet)
 
   ## 13.26.1 Reporting Content Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id151
-  roomEventReport* = newClDraft("/rooms/%roomId/report/%eventId", HttpPost) 
+  RoomEventReport* = newClDraft("/rooms/%roomId/report/%eventId", HttpPost)
 
   ## 13.27.1 Third Party Networks Lookups
   ## https://matrix.org/docs/spec/client_server/r0.6.1#third-party-lookups
@@ -278,4 +280,6 @@ const
   thirdPartyUser* = newClDraft("/thirdparty/user", HttpGet)
 
   ## 13.31.2 Room Upgrades Client behaviour
-  roomUpgrade* = newClDraft("/rooms/%roomId/upgrade", HttpPost) 
+  roomUpgrade* = newClDraft("/rooms/%roomId/upgrade", HttpPost)
+
+export endutils
