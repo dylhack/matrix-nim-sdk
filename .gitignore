@@ -1,5 +1,6 @@
 ###Project Specific###
 tests.env
+tests/testclient
 
 ###Nim###
 nimcache/

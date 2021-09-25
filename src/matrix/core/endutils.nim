@@ -27,6 +27,9 @@ func newDraft*(path: string, `method`: HttpMethod): EndpointDraft =
     httpmethod: `method`
   )
 
+func addQuery*(e: var Endpoint, query: openArray[(string, string)]): void =
+  e.target.query = encodeQuery(query)
+
 func build*(
   endpoint: EndpointDraft,
   homeserver: Uri,
