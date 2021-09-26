@@ -1,97 +1,98 @@
-import asyncdispatch except fail
+import std/strformat
+import std/times
+import std/unittest
+import "./config"
 import matrix
-import os
-import unittest
-import strformat
-import times
 
-const
-  username = getEnv("MX_USER", "")
-  password = getEnv("MX_PASS", "")
-  homeserver = getEnv("MX_SERVER", "")
+let
+  username = getUsername()
+  password = getPassword()
+  homeserver = getServer()
+
 let client = newMatrixClient(homeserver)
 
-proc login(): Future[string] {.async.} =
-  let resp = await client.login(username, password)
-  return resp.token
+suite "5.0 Client Authentication":
+  teardown:
+    client.dropToken()
 
-suite "5.5 Login Endpoints":
-  test "username and password env are set":
-    check (len(username) != 0)
-    check (len(password) != 0)
-  test "client can login":
-    try:
-      let token = waitFor login()
-      check (len(token) > 0)
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can logout":
-    try:
-      let token = waitFor login()
-      client.setToken token
-      let resp = waitFor client.logout()
-      check resp
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can logout all":
-    try:
-      let token = waitFor login()
-      client.setToken token
-      let resp = waitFor client.logoutAll()
-      check resp
-    except MatrixError as e:
-      echo e.error
-      fail()
+  suite "5.5 Login Endpoints":
+    test "client can login":
+      try:
+        let loginResp = client.login(username, password)
+        check (len(loginResp.token) > 0)
+      except MatrixError as e:
+        fail()
+        echo e.error
 
-suite "5.6 Account Registration and Management":
-  var now = toUnixFloat getTime()
-  var user = fmt"user-{now}"
-  var pass = fmt"pass-{now}"
+    test "client can logout":
+      try:
+        let loginResp = client.login(username, password)
+        client.setToken loginResp.token
+        let resp = client.logout()
+        check resp
+      except MatrixError as e:
+        fail()
+        echo e.error
 
-  test "client can register":
-    try:
-      client.dropToken()
-      let resp = waitFor client.register(user, pass)
-      check (len(resp.token) > 0)
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can register as guest":
-    try:
-      client.dropToken()
-      let resp = waitFor client.registerGuest(pass)
-      check (len(resp.token) > 0)
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can change password":
-    try:
-      let token = waitFor login()
-      client.setToken token
-      let resp = waitFor client.changePassword(username, password, password)
-      check resp
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can check username availability":
-    try:
-      client.dropToken()
-      let loginRes = waitFor client.login(user, pass)
-      client.setToken(loginRes.token)
-      let resp = waitFor client.isUsernameAvailable(user)
-      check (not resp)
-    except MatrixError as e:
-      echo e.error
-      fail()
-  test "client can deactivate account":
-    try:
-      client.dropToken()
-      let loginRes = waitFor client.login(user, pass)
-      client.setToken(loginRes.token)
-      let resp = waitFor client.deactivate(user, pass)
-      check resp
-    except MatrixError as e:
-      echo e.error
-      fail()
+    test "client can logout all":
+      try:
+        let loginResp = client.login(username, password)
+        client.setToken loginResp.token
+        let resp = client.logoutAll()
+        check resp
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+
+
+  suite "5.6 Account Registration and Management":
+    var now = toUnixFloat getTime()
+    var user = fmt"user-{now}"
+    var pass = fmt"pass-{now}"
+
+    test "client can register":
+      try:
+        let resp = client.register(user, pass)
+        check (len(resp.token) > 0)
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+    test "client can register as guest":
+      try:
+        let resp = client.registerGuest(pass)
+        check (len(resp.token) > 0)
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+    test "client can change password":
+      try:
+        let loginRes = client.login(user, pass)
+        client.setToken(loginRes.token)
+        let resp = client.changePassword(user, pass, pass)
+        check resp
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+    test "client can check username availability":
+      try:
+        let loginRes = client.login(user, pass)
+        client.setToken(loginRes.token)
+        let resp = client.isUsernameAvailable(user)
+        check (not resp)
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+    test "client can deactivate account":
+      try:
+        let loginRes = client.login(user, pass)
+        client.setToken(loginRes.token)
+        let resp = client.deactivate(user, pass)
+        check resp
+      except MatrixError as e:
+        fail()
+        echo e.error

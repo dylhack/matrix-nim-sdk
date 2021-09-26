@@ -1,5 +1,5 @@
 ###Project Specific###
-tests.env
+tests/config.ini
 tests/testclient
 
 ###Nim###

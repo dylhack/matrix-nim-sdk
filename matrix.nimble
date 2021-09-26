@@ -8,5 +8,7 @@ srcDir        = "src"
 
 
 # Dependencies
-
 requires "nim >= 1.4.8"
+
+when defined(js):
+  requires nodejs

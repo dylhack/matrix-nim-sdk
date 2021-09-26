@@ -1,4 +1,4 @@
-import json
+import std/json
 
 type MatrixError* {.pure.} = ref object of CatchableError
   errcode*: string

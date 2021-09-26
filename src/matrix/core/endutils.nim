@@ -1,8 +1,8 @@
 ## Endpoint utilities
-import uri
-import strformat
-import strutils
-import httpcore
+import std/uri
+import std/strformat
+import std/strutils
+import std/httpcore
 
 type
   Endpoint* {.pure.} = object
