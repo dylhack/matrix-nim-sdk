@@ -1,5 +1,5 @@
 import std/[strformat, times, unittest]
-import "./config"
+import ../config
 import matrix
 
 let
