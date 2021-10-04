@@ -63,3 +63,6 @@ Unit testing is a pain, but it is absolutely needed for any feature added to thi
 Keeping the library pure is probably the number one longest task when adding your feature. To test that your feature is "pure" make sure you have unit tests written for native and NodeJS and run `nimble test` for each platform.
 
 **Frontend JavaScript is not testable** yet. Because the tests have to be performed in a browser this isn't automated yet using `nimble test`, but eventually we will run a headless browser (a driver) and communicate the test results back to the parent process (Nimble), for now you may skip testing frontend.
+
+## Branching
+Make sure that whatever feature is being worked on has it's own branch. If you are a contributor on the GitHub repository.
