@@ -21,27 +21,23 @@ src/
 |  |
 |  +-feature/
 |
-+--client/
++--clientserver/
    |
    +-feature/
 ```
 
-Everything relies on the core modules. This will help prevent merge
-conflicts if all of the essentials are done and out of the way. The second
-helpful approach for preventing merge conflicts is isolating each feature in
-it's own folder under whatever category it fits under (client server / appservice).
+Everything relies on the core modules. This will help prevent merge conflicts if all of the essentials are done and out of the way. The second helpful approach for preventing merge conflicts is isolating each feature in it's own folder under whatever category it fits under (client-server / appservice).
 
-The client folder is dedicated towards the Client-Server API for Matrix. The
-appservice folder is dedicated towards the Appservice-Server API for Matrix. As for utilities, if they're shared amongst both then they will go under `src/utils`.
+The clientserver folder is dedicated towards the Client-Server API for Matrix. The appservice folder is dedicated towards the Appservice-Server API for Matrix. As for utilities, if they're shared amongst both then they will go under `src/utils`.
 
 ## Making a Module
-If you're working on a new file (aka module) this is the structure of which
-your module should follow in sequential order.
+If you're working on a new file (aka module) this is the structure of which your module should follow in sequential order.
  1. Imports / Includes
  2. Type Definitions
  3. Constants
- 4. Procedures
- 5. Exports
+ 4. Private Procedures
+ 5. Public Procedures
+ 6. Exports
 
 ## Commenting
 Every type should follow:
@@ -61,18 +57,9 @@ needs to get removed or revamped then it will be directly done so with a
 major version bump.
 
 ## Testing
-Unit testing is a pain, but it is absolutely needed for any feature added to
-this library so that it doesn't break before it gets to production. If it is
-Client-Server related then it should go under `tests/clientserver`, if it is
-appservice related then it should go under `tests/appservice`, and if it is
-core related then it should go under `tests/core`.
+Unit testing is a pain, but it is absolutely needed for any feature added to this library so that it doesn't break before it gets to production. If it is Client-Server related then it should go under `tests/clientserver`, if it is appservice related then it should go under `tests/appservice`, and if it is core related then it should go under `tests/core`.
 
 ## Purity
 Keeping the library pure is probably the number one longest task when adding your feature. To test that your feature is "pure" make sure you have unit tests written for native and NodeJS and run `nimble test` for each platform.
 
-**Frontend JavaScript is not testable** yet. Because the tests have to be performed in a browser this isn't automated yet using `nimble test`, but eventually we will run a headless browser (a driver) and communicate the test results back to the parent process (Nim), for now you may skip testing frontend.
-
-```sh
-nimble test js -d:nodejs
-nimble test c -d:ssl
-```
+**Frontend JavaScript is not testable** yet. Because the tests have to be performed in a browser this isn't automated yet using `nimble test`, but eventually we will run a headless browser (a driver) and communicate the test results back to the parent process (Nimble), for now you may skip testing frontend.
