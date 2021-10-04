@@ -1,17 +1,17 @@
-## Endpoint utilities
-import std/uri
-import std/strformat
-import std/strutils
-import std/httpcore
+## Endpoint utilities for generating endpoints.
+import std/[uri, strformat, strutils, httpcore]
 
 type
   Endpoint* {.pure.} = object
+    ## Endpoint holds the full URI path to the endpoint
+    ## including the protocol and IP address or domain.
     target*: Uri
     httpMethod*: HttpMethod
   EndpointDraft* {.pure.} = object
-    ## see ``build`` to look on how an
-    ## ``EndpointDraft`` becomes an
-    ## ``Endpoint``
+    ## The EndpointDraft holds the endpoint, but
+    ## doesn't have the homeserver just yet, once
+    ## build(EndpointDraft) is called then it
+    ## becomes an `Endpoint`.
     path*: string
     httpMethod: HttpMethod
 
@@ -21,15 +21,21 @@ func `$`*(e: Endpoint): string =
 func `$`*(e: EndpointDraft): string =
   return e.path
 
+## This creates a new EndpointDraft, this should only be
+## used by the library itself, not for outside use.
 func newDraft*(path: string, `method`: HttpMethod): EndpointDraft =
   return EndpointDraft(
     path: path,
     httpmethod: `method`
   )
 
+## Add query to the URI.
 func addQuery*(e: var Endpoint, query: openArray[(string, string)]): void =
   e.target.query = encodeQuery(query)
 
+## Build an EndpointDraft into an Endpoint. Originally the EndpointDraft only
+## includes the path to the Matrix endpoint, but not the domain, port, or
+## protocol (http / https).
 func build*(
   endpoint: EndpointDraft,
   homeserver: Uri,
@@ -46,17 +52,19 @@ func build*(
   # all gets encoded properly to be RFC3986
   # compliant
   for param in items params:
-    let (key, val) = param
-    let encoded = encodeUrl val
+    let
+      (key, val) = param
+      encoded = encodeUrl val
     formatted = replace(formatted, fmt"%{key}", encoded)
 
   # Join it all together
-  var target = homeserver / formatted
+  let target = homeserver / formatted
   return Endpoint(target: target, httpMethod: endpoint.httpMethod)
 
+## Alias for build(Endpoint).
 func build*(
   endpoint: EndpointDraft,
   homeserver: string,
   params: varargs[(string, string)] = []): Endpoint =
-  var server = parseUri(homeserver)
+  var server = parseUri homeserver
   return endpoint.build(server, params)

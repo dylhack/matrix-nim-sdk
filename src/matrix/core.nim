@@ -1,5 +1,3 @@
-import core/client
-import core/endutils
-import core/errors
+import core/[client, endutils]
 
-export client, endutils, errors
+export client, endutils

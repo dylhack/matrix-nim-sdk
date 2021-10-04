@@ -1,10 +1,8 @@
-import "./matrix/core/client"
-import "./matrix/core/errors"
-import "./matrix/client/clientauth"
+import matrix/core
+import matrix/clientserver
 
 # Core Exports
-export client, errors
+export client
 
 # Client-Server API Exports
-export
-  clientauth
+export clientserver

@@ -1,6 +1,7 @@
 when defined(nodejs):
-  include "./client/backendjs"
+  # NOTE(dylhack): This isn't usable yet.
+  include client/backendjs
 elif defined(js):
-  include "./client/frontendjs"
+  include client/js
 else:
-  include "./client/native"
+  include client/native

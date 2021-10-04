@@ -1,6 +1,6 @@
-from strformat import fmt
-from httpcore import HttpMethod
-import "../core/endutils"
+from std/httpcore import HttpMethod
+from std/strformat import fmt
+import ../core
 
 const prefix = "/_matrix/client/r0"
 
@@ -30,7 +30,7 @@ const
   thirdPidGet* = newClDraft("/account/3pid", HttpGet)
   thirdPidAdd* = newClDraft("/account/3pid/add", HttpPost)
   thirdPidBind* = newClDraft("/account/3pid/bind", HttpPost)
-  thirdPidUnbind* = newClDraft("/account/3pid/unbind",HttpPost)
+  thirdPidUnbind* = newClDraft("/account/3pid/unbind", HttpPost)
   thirdPidDelete* = newClDraft("/account/3pid/delete", HttpPost)
 
   ## 5.8 Current account information
@@ -235,23 +235,23 @@ const
 
   ## 13.18.2 Room Tagging Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id124
-  roomTagGet* = newClDraft("GET /user/%userId/rooms/%roomId/tags", HttpGet)
+  roomTagGet* = newClDraft("/user/%userId/rooms/%roomId/tags", HttpGet)
   roomTagPut* = newClDraft(
-    "PUT /user/%userId/rooms/%roomId/tags/%tag",
+    "/user/%userId/rooms/%roomId/tags/%tag",
     HttpPut)
   roomTagDelete* = newClDraft(
-    "DELETE /user/%userId/rooms/%roomId/tags/%tag",
+    "/user/%userId/rooms/%roomId/tags/%tag",
     HttpDelete)
 
   ## 13.19.2 Client Config Client Behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id127
-  accountDataPut* = newClDraft("PUT /user/%userId/account_data/%type", HttpPut)
-  accountDataGet* = newClDraft("GET /user/%userId/account_data/%type", HttpGet)
+  accountDataPut* = newClDraft("/user/%userId/account_data/%type", HttpPut)
+  accountDataGet* = newClDraft("/user/%userId/account_data/%type", HttpGet)
   roomDataPut* = newClDraft(
-    "PUT /user/%userId/rooms/%roomId/account_data/%type",
+    "/user/%userId/rooms/%roomId/account_data/%type",
     HttpPut)
   roomDataGet* = newClDraft(
-    "GET /user/%userId/rooms/%roomId/account_data/%type",
+    "/user/%userId/rooms/%roomId/account_data/%type",
     HttpGet)
 
   ## 13.20.1 Server Administration Client behaviour
@@ -281,5 +281,3 @@ const
 
   ## 13.31.2 Room Upgrades Client behaviour
   roomUpgrade* = newClDraft("/rooms/%roomId/upgrade", HttpPost)
-
-export endutils
