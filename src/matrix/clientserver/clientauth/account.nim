@@ -5,10 +5,7 @@ import jsony
 import ../../core
 import ../endpoints
 import shared
-when defined(js):
-  import std/asyncjs
-else:
-  import std/asyncdispatch
+import matrix/asyncutils
 
 type
   AccountId = object
@@ -83,11 +80,11 @@ proc newRegisterRes(res: PureResponse): RegisterRes =
   return res.body.fromJson(RegisterRes)
 
 proc register*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   username: string,
   password: string,
   deviceId: string = ""
-): Future[RegisterRes] {.multisync.} =
+): Future[RegisterRes] {.fastSync.} =
   let
     device = if len(deviceId) == 0: none(string) else: some(deviceId)
     req = newRegisterReq(
@@ -100,10 +97,10 @@ proc register*(
   return newRegisterRes(resp)
 
 proc registerGuest*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   password: string,
   deviceId: string = ""
-): Future[RegisterRes] {.multisync.} =
+): Future[RegisterRes] {.fastSync.} =
   let
     device = if len(deviceId) == 0: none(string) else: some(deviceId)
     req = newRegisterReq(
@@ -144,12 +141,12 @@ proc newChangePasswordReq(
   )
 
 proc changePassword*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   username,
   password,
   newPassword: string,
   logoutAll: bool = false
-): Future[bool] {.multisync.} =
+): Future[bool] {.fastSync.} =
   let
     req = newChangePasswordReq(
       client = client,
@@ -187,9 +184,9 @@ proc newUserAvailableRes(res: PureResponse): bool =
     raise e
 
 proc isUsernameAvailable*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   username: string
-): Future[bool] {.multisync.} =
+): Future[bool] {.fastSync.} =
   let req = newUserAvailableReq(client, username)
   try:
     let res = await client.request(req)
@@ -223,11 +220,11 @@ proc newDeactivateReq(
   )
 
 proc deactivate*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   username,
   password: string,
   idServer: string = ""
-): Future[bool] {.multisync.} =
+): Future[bool] {.fastSync.} =
   let
     idS = if len(idServer) == 0: none(string) else: some(idServer)
     req = newDeactivateReq(
