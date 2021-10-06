@@ -2,14 +2,18 @@
 ## up with js.nim and have the same publicly accessible procedures and types.
 ## The native iteration supports both blocking and asynchronous procedures 
 ## using the multisync pragma.
-import std/[asyncdispatch, os, httpclient, httpcore, uri]
+import std/[os, httpclient, httpcore, uri]
 import jsony
 import ../endutils
 import pure
+import matrix/asyncutils
 
 type
   AsyncMatrixClient* = MatrixClient[AsyncHttpClient]
   SyncMatrixClient* = MatrixClient[HttpClient]
+
+MatrixClient.setAsync(AsyncMatrixClient)
+MatrixClient.setSync(SyncMatrixClient)
 
 proc getHttpCl(): HttpClient =
   return newHttpClient(headers = newHttpHeaders(defaultHeaders))
@@ -18,10 +22,10 @@ proc getAsyncCl(): AsyncHttpClient =
   return newAsyncHttpClient(headers = newHttpHeaders(defaultHeaders))
 
 proc handleRateLimit(
-  client: SyncMatrixClient | AsyncMatrixClient,
+  client: MatrixClient,
   req: PureRequest,
   payload: string
-): Future[PureResponse] {.multisync.} =
+): Future[PureResponse] {.fastSync.} =
   var parsed = payload.fromJson(RateLimitError)
 
   while true:
@@ -83,9 +87,9 @@ proc newAsyncMatrixClient*(
 
 ## This procedure performs a HTTP request.
 proc request*(
-  client: SyncMatrixClient | AsyncMatrixClient,
+  client: MatrixClient,
   req: PureRequest,
-): Future[PureResponse] {.multisync.} =
+): Future[PureResponse] {.fastSync.} =
   let
     resp = await client.http.request(
       url = $req.endpoint,

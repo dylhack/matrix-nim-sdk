@@ -2,10 +2,7 @@ import std/[httpcore, options]
 import jsony
 import ../../core
 import ../endpoints
-when defined(js):
-  import std/[asyncjs, jsffi]
-else:
-  import std/asyncdispatch
+import matrix/asyncutils
 
 type
   UserIdentifier* = object
@@ -50,11 +47,11 @@ proc newLoginRes(res: PureResponse): LoginRes =
   return res.body.fromJson(LoginRes)
 
 proc login*(
-  client: AsyncMatrixClient | SyncMatrixClient,
+  client: MatrixClient,
   username,
   password: string,
   deviceId: string = ""
-): Future[LoginRes] {.multisync.} =
+): Future[LoginRes] {.fastSync.} =
   let
     device = if len(deviceId) == 0: none(string) else: some(deviceId)
     req = newLoginReq(
@@ -74,8 +71,8 @@ proc newLogoutReq(
   return PureRequest(endpoint: target, data: "")
 
 proc logout*(
-  client: AsyncMatrixClient | SyncMatrixClient
-): Future[bool] {.multisync.} =
+  client: MatrixClient
+): Future[bool] {.fastSync.} =
   let
     req = newLogoutReq(client)
     res = await client.request(req)
@@ -87,8 +84,8 @@ proc newLogoutAllReq(client: MatrixClient): PureRequest =
   return PureRequest(endpoint: target, data: "")
 
 proc logoutAll*(
-  client: AsyncMatrixClient | SyncMatrixClient
-): Future[bool] {.multisync.} =
+  client: MatrixClient
+): Future[bool] {.fastSync.} =
   let
     req = newLogoutAllReq(client)
     resp = await client.request(req)

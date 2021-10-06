@@ -1,14 +1,13 @@
 ## This is the frontend JavaScript iteration of the MatrixClient. This module
 ## should match up with native.nim and have the same publicly accessible 
 ## procedures and types.
-import std/[
-  asyncjs, dom, strformat,
+import std/[dom, strformat,
   jsfetch, uri, jsheaders,
   jsffi, httpcore, macros]
 import jsony
 import pure
 import ../endutils
-
+import matrix/asyncutils
 type
   JsHttpClient* = object
     ## This is our own custom implementation of an HttpClient. This exists
@@ -22,6 +21,9 @@ type
   # code.
   AsyncMatrixClient* = JsMatrixClient
   SyncMatrixClient* = JsMatrixClient
+
+MatrixClient.setSync(SyncMatrixClient)
+MatrixClient.setAsync(AsyncMatrixClient)
 
 proc replaceReturn(node: var NimNode) =
   var z = 0
