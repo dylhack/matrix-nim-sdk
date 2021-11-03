@@ -1,6 +1,6 @@
 import std/parsecfg
 
-const location = "./tests/config.ini"
+const location = "./tests/config.default.ini"
 let config = loadConfig(location)
 
 proc getServer*(): string  =
