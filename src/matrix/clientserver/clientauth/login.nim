@@ -1,8 +1,8 @@
 import std/[httpcore, options]
-import jsony
+import pkg/jsony
 import ../../core
 import ../endpoints
-import matrix/asyncutils
+import ../../asyncutils
 
 type
   UserIdentifier* = object
@@ -40,7 +40,7 @@ proc newLoginReq(
     )
   return PureRequest(
     endpoint: target,
-    data: payload.toJson()
+    data: toJson(payload)
   )
 
 proc newLoginRes(res: PureResponse): LoginRes =

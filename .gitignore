@@ -5,6 +5,7 @@ nimcache/
 *
 !/**/
 !*.*
+*.js
 
 ###Project Specific###
 src/matrix.out
