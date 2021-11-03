@@ -1,5 +1,7 @@
 ## This is the pure client code. This is code is usable by any platform
 ## (JavaScript, native, etc.)
+when defined(js):
+  import std/jsheaders
 import std/[uri, strformat, httpcore]
 import jsony
 import ../endutils
@@ -41,7 +43,10 @@ func setToken*(client: MatrixClient, token: string): void =
 
 ## Remove the token from the MatrixClient.
 func dropToken*(client: MatrixClient): void =
-  client.http.headers.del("Authorization")
+  when defined(js):
+    client.http.headers.delete("Authorization")
+  else:
+    client.http.headers.del("Authorization")
 
 ## Create a new MatrixError with given JSON.
 proc buildMxError*(body: string): MatrixError =
