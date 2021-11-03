@@ -40,7 +40,7 @@ proc newLoginReq(
     )
   return PureRequest(
     endpoint: target,
-    data: payload.toJson()
+    data: toJson(payload)
   )
 
 proc newLoginRes(res: PureResponse): LoginRes =
