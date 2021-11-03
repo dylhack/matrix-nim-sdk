@@ -38,7 +38,7 @@ jobs:
           add-to-path: true # optional, default is true
 
       - name: Get dependencies
-        run: nimble build
+        run: nimble install -d -Y
 
       - name: Run C backend tests
         run: |
