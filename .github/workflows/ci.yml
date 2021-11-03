@@ -45,7 +45,7 @@ jobs:
           nim c -r tests/testcore.nim
           nim c -r tests/testclientserver.nim
 
-      - name: Compile JS backend tests
+      - name: Run JS backend tests
         run: |
-          nim js tests/testcore.nim
-          nim js tests/testclientserver.nim
+          nim js -r tests/testcore.nim
+          nim js -r tests/testclientserver.nim
