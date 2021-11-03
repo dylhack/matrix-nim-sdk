@@ -1,8 +1,8 @@
 import std/[httpcore, options]
-import jsony
+import pkg/jsony
 import ../../core
 import ../endpoints
-import matrix/asyncutils
+import ../../asyncutils
 
 type
   UserIdentifier* = object

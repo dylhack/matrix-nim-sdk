@@ -6,7 +6,7 @@ import std/[os, httpclient, httpcore, uri]
 import jsony
 import ../endutils
 import pure
-import matrix/asyncutils
+import ../../asyncutils
 
 type
   AsyncMatrixClient* = MatrixClient[AsyncHttpClient]

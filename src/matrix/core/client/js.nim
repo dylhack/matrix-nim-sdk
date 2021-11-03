@@ -7,7 +7,8 @@ import std/[dom, strformat,
 import jsony
 import pure
 import ../endutils
-import matrix/asyncutils
+import ../../asyncutils
+
 type
   JsHttpClient* = object
     ## This is our own custom implementation of an HttpClient. This exists
