@@ -23,3 +23,13 @@ suite "10.0 Rooms":
       except MatrixError as e:
         fail()
         echo e.error
+
+    test "10.2.1: login and create room alias":
+      try:
+        let loginRes = client.login(username, password)
+        client.setToken(loginRes.accessToken)
+        let roomAliasRes = client.createRoomAlias("test", createRoomRes.roomId)
+        check roomAliasRes
+      except MatrixError as e:
+        fail()
+        echo e.error

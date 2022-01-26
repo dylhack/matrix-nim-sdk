@@ -1,3 +1,3 @@
-import rooms/[creation]
+import rooms/[creation, aliases]
 
 export creation
