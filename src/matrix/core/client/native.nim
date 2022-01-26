@@ -1,6 +1,6 @@
 ## This is the native iteration of the MatrixClient. This module should match
 ## up with js.nim and have the same publicly accessible procedures and types.
-## The native iteration supports both blocking and asynchronous procedures 
+## The native iteration supports both blocking and asynchronous procedures
 ## using the multisync pragma.
 import std/[os, httpclient, httpcore, uri]
 import jsony
