@@ -42,8 +42,6 @@ suite "5.0 Client Authentication":
         fail()
         echo e.error
 
-
-
   suite "5.6 Account Registration and Management":
     let
       now = toUnixFloat getTime()
