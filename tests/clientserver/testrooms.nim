@@ -19,7 +19,6 @@ suite "10.0 Rooms":
         let loginRes = client.login(username, password)
         client.setToken(loginRes.accessToken)
         let createRoomRes = client.createRoom()
-        check createRoomRes
       except MatrixError as e:
         fail()
         echo e.error
@@ -28,8 +27,23 @@ suite "10.0 Rooms":
       try:
         let loginRes = client.login(username, password)
         client.setToken(loginRes.accessToken)
-        let roomAliasRes = client.createRoomAlias("test", createRoomRes.roomId)
+        let
+          createRoomRes = client.createRoom()
+          roomAliasRes = client.createRoomAlias("test", createRoomRes.roomId)
         check roomAliasRes
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+  suite "10.4 Room membership":
+    test "10.4.1: get joined rooms":
+      try:
+        let guestRes = client.registerGuest(password)
+        client.setToken(guestRes.accessToken)
+        let
+          joinedRoomsRes = client.joinedRooms()
+          emptySeq: seq[string] = @[]
+        check joinedRoomsRes.joinedRooms == emptySeq
       except MatrixError as e:
         fail()
         echo e.error
