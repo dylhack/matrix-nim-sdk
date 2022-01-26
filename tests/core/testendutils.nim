@@ -18,6 +18,17 @@ suite "endutils testing":
     )
     let endpoint = filterGet.build(
       server,
-      ("userId", "@dylhack:newcircuit.io"), ("filterId", "1")
+      urlParams = [("userId", "@dylhack:newcircuit.io"), ("filterId", "1")]
+    )
+    echo $endpoint
+    check ($endpoint == expected)
+
+  test "can build query param based endpoint":
+    const expected = expect(
+      "/_matrix/client/r0/register?kind=guest"
+    )
+    let endpoint = accountRegister.build(
+      server,
+      queryParams = [("kind", "guest")]
     )
     check ($endpoint == expected)

@@ -49,7 +49,7 @@ proc newRegisterReq(
       `type`: "m.login.dummy",
       session: none(string)
     )
-    target = accountRegister.build(client.server, [("kind", kind)])
+    target = accountRegister.build(client.server, queryParams = [("kind", kind)])
 
   if username.isSome():
     let payload = RegisterReqName(
@@ -129,8 +129,8 @@ proc newChangePasswordReq(
         identifier: AccountId(
           `type`: ID_USER_TYPE,
           user: username
+        )
       )
-    )
     )
 
   return PureRequest(
@@ -208,8 +208,8 @@ proc newDeactivateReq(
         identifier: AccountId(
           `type`: ID_USER_TYPE,
           user: username
+        )
       )
-    )
     )
 
   return PureRequest(

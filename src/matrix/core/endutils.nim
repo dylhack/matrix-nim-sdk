@@ -39,7 +39,7 @@ func addQuery*(e: var Endpoint, query: openArray[(string, string)]): void =
 func build*(
   endpoint: EndpointDraft,
   homeserver: Uri,
-  params: varargs[(string, string)] = []): Endpoint =
+  urlParams, queryParams: varargs[(string, string)] = []): Endpoint =
   ## This builds the draft into an Endpoint by
   ## formatting the path, joining the with the
   ## homeserver provided, and into an Endpoint.
@@ -51,20 +51,20 @@ func build*(
   # but this loop must exist to make sure it
   # all gets encoded properly to be RFC3986
   # compliant
-  for param in items params:
+  for param in items urlParams:
     let
       (key, val) = param
       encoded = encodeUrl val
     formatted = replace(formatted, fmt"%{key}", encoded)
 
   # Join it all together
-  let target = homeserver / formatted ? params
+  let target = homeserver / formatted ? queryParams
   return Endpoint(target: target, httpMethod: endpoint.httpMethod)
 
 ## Alias for build(Endpoint).
 func build*(
   endpoint: EndpointDraft,
   homeserver: string,
-  params: varargs[(string, string)] = []): Endpoint =
+  urlParams, queryParams: varargs[(string, string)] = []): Endpoint =
   var server = parseUri homeserver
-  return endpoint.build(server, params)
+  return endpoint.build(server, urlParams, queryParams)
