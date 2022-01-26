@@ -1,5 +1,5 @@
 ## Endpoint utilities for generating endpoints.
-import std/[uri, strformat, strutils, httpcore]
+import std/[uri, httpcore]
 
 type
   Endpoint* {.pure.} = object
@@ -47,18 +47,8 @@ func build*(
   # Format the path
   var formatted = endpoint.path
 
-  # NOTE(dylhack): I know multiReplace exists
-  # but this loop must exist to make sure it
-  # all gets encoded properly to be RFC3986
-  # compliant
-  for param in items params:
-    let
-      (key, val) = param
-      encoded = encodeUrl val
-    formatted = replace(formatted, fmt"%{key}", encoded)
-
   # Join it all together
-  let target = homeserver / formatted
+  let target = homeserver / formatted ? params
   return Endpoint(target: target, httpMethod: endpoint.httpMethod)
 
 ## Alias for build(Endpoint).
