@@ -1,3 +1,3 @@
-import clientserver/[clientauth]
+import clientserver/[clientauth, rooms]
 
-export clientauth
+export clientauth, rooms
