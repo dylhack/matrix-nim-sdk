@@ -60,7 +60,7 @@ proc newLogoutReq(
 ): PureRequest =
   let
     target = endpoints.logout.build(client.server)
-  return PureRequest(endpoint: target, data: "")
+  return PureRequest(endpoint: target)
 
 proc logout*(
   client: MatrixClient
@@ -73,7 +73,7 @@ proc logout*(
 proc newLogoutAllReq(client: MatrixClient): PureRequest =
   let
     target = endpoints.logoutAll.build(client.server)
-  return PureRequest(endpoint: target, data: "")
+  return PureRequest(endpoint: target)
 
 proc logoutAll*(
   client: MatrixClient

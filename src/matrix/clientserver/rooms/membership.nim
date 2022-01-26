@@ -21,7 +21,6 @@ proc newJoinRoomReq(
   let target = roomJoinId.build(client.server, urlParams = [("roomId", roomId)])
   return PureRequest(
     endpoint: target,
-    data: ""
   )
 
 proc newJoinRoomRes(res: PureResponse): JoinRoomRes =
@@ -34,7 +33,6 @@ proc joinedRooms*(
     target = joinedRoomsGet.build(client.server)
     req = PureRequest(
       endpoint: target,
-      data: ""
     )
     res = await client.request(req)
   return newJoinedRoomsRes(res)

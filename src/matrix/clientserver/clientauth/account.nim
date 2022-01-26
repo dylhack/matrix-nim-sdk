@@ -162,8 +162,7 @@ proc newUserAvailableReq(
   var target = accountAvailability.build(client.server)
   target.addQuery({"username": username})
   return PureRequest(
-    endpoint: target,
-    data: ""
+    endpoint: target
   )
 
 proc newUserAvailableRes(res: PureResponse): bool =
