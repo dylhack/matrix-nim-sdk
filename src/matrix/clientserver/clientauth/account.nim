@@ -2,18 +2,12 @@
 ## https://matrix.org/docs/spec/client_server/r0.6.1#account-registration-and-management
 import std/options
 import pkg/jsony
-import shared
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import types
 
 type
-  AccountId = object
-    `type`: string
-    user: string
-  AccountAuth = object of AuthData
-    password: string
-    identifier: AccountId
   ChangePasswordReq = object
     new_password: string
     logout_devices: bool

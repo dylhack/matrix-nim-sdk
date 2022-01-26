@@ -2,19 +2,9 @@ import pkg/jsony
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import types
 
 type
-  Visibility* = enum
-    public = "public", private = "private"
-  Invite3pid* = object
-    idServer*: string
-    idAccessToken*: string
-    medium*: string
-    address*: string
-  StateEvent* = object
-    `type`*: string
-    stateKey*: string
-    content*: string
   CreateRoomReq* = object
     roomAliasName*: string
     name*: string

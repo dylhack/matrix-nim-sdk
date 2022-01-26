@@ -3,17 +3,9 @@ import pkg/jsony
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import types
 
 type
-  UserIdentifier* = object
-    idType: string
-  IdentityServerInfo* = object
-    baseUrl: string
-  HomeServerInfo* = object
-    baseUrl: string
-  DiscoveryInfo* = object
-    homeserver: HomeServerInfo
-    identityServer: Option[IdentityServerInfo]
   LoginReq* = object
     `type`: string
     user: string
