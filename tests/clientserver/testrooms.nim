@@ -10,14 +10,20 @@ let
 let client = newMatrixClient(homeserver)
 
 suite "10.0 Rooms":
+  setup:
+    try:
+      let loginRes = client.login(username, password)
+      client.setToken(loginRes.accessToken)
+    except MatrixError as e:
+      fail()
+      echo e.error
+
   teardown:
     client.dropToken()
 
   suite "10.1 Creation":
     test "10.1.1: login and create room":
       try:
-        let loginRes = client.login(username, password)
-        client.setToken(loginRes.accessToken)
         let res = client.createRoom()
       except MatrixError as e:
         fail()
@@ -25,8 +31,6 @@ suite "10.0 Rooms":
 
     test "10.2.1: login and create room alias":
       try:
-        let loginRes = client.login(username, password)
-        client.setToken(loginRes.accessToken)
         let
           createRoomRes = client.createRoom()
           res = client.createRoomAlias("test", createRoomRes.roomId)
@@ -50,8 +54,6 @@ suite "10.0 Rooms":
 
     test "10.4.2.2: join room":
       try:
-        let guestRes = client.registerGuest(password)
-        client.setToken(guestRes.accessToken)
         let
           roomId = "matrix:matrix.org"
           res = client.joinRoom(roomId)
