@@ -49,13 +49,12 @@ proc newRegisterReq(
       `type`: "m.login.dummy",
       session: none(string)
     )
-    target = accountRegister.build(client.server)
+    target = accountRegister.build(client.server, [("kind", kind)])
 
   if username.isSome():
     let payload = RegisterReqName(
       auth: auth,
       device_id: deviceId,
-      kind: kind,
       password: password,
       username: username
     )
@@ -67,7 +66,6 @@ proc newRegisterReq(
     let payload = RegisterReq(
       auth: auth,
       device_id: deviceId,
-      kind: kind,
       password: password,
     )
     return PureRequest(
