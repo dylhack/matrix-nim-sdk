@@ -53,7 +53,7 @@ const
 
   ## 9.4 Syncing
   ## https://matrix.org/docs/spec/client_server/r0.6.1#syncing
-  Sync* = newClDraft("/sync", HttpGet)
+  syncGet* = newClDraft("/sync", HttpGet)
 
   ## 9.5 Getting events for a room
   ## https://matrix.org/docs/spec/client_server/r0.6.1#getting-events-for-a-room
