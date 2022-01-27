@@ -1,4 +1,3 @@
-import std/httpcore
 import pkg/jsony
 import ../../core
 import ../endpoints
