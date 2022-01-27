@@ -71,10 +71,12 @@ const
   roomStateEventPut* = newClDraft(
     "/rooms/%roomId/state/%eventType/%stateKey",
     HttpPut)
-  roomEventPut* = newClDraft(
+  roomEventStateKeyPut* = newClDraft(
+    "/rooms/%roomId}/send/%eventType/%stateKey",
+    HttpPut)
+  roomEventTxnIdPut* = newClDraft(
     "/rooms/%roomId}/send/%eventType/%txnId",
     HttpPut)
-
   ## 9.7 Redactions
   ## https://matrix.org/docs/spec/client_server/r0.6.1#redactions
   eventRedactPut* = newClDraft(
