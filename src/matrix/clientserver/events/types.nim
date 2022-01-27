@@ -102,3 +102,14 @@ type
   DeviceLists* = object
     changed*: seq[string]
     left*: seq[string]
+
+  ## Refers to msgtype
+  MessageType* = enum
+    `m.text` = "m.text",
+    `m.emote` = "m.emote",
+    `m.notice` = "m.notice",
+    `m.image` = "m.image",
+    `m.file` = "m.file",
+    `m.audio` = "m.audio",
+    `m.location` = "m.location",
+    `m.video` = "m.video"
