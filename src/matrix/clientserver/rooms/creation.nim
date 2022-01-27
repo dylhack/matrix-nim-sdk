@@ -14,6 +14,8 @@ type
     roomVersion*: string
     initialState: seq[StateEvent]
     isDirect*: bool
+    visibility*: Visibility
+    preset*: Preset
   CreateRoomRes* = object
     roomId*: string
 
@@ -23,7 +25,9 @@ proc newCreateRoomReq(
     invite: seq[string],
     invite3pid: seq[Invite3pid],
     initialState: seq[StateEvent],
-    isDirect: bool
+    isDirect: bool,
+    visibility: Visibility,
+    preset: Preset
   ): PureRequest =
   let
     target = roomCreate.build(client.server)
@@ -35,7 +39,9 @@ proc newCreateRoomReq(
       invite: invite,
       invite3pid: invite3pid,
       initialState: initialState,
-      isDirect: isDirect
+      isDirect: isDirect,
+      visibility: visibility,
+      preset: preset
     )
   return PureRequest(
     endpoint: target,
@@ -51,7 +57,9 @@ proc createRoom*(
   invite: seq[string] = @[],
   invite3pid: seq[Invite3pid] = @[],
   initialState: seq[StateEvent] = @[],
-  isDirect: bool = false
+  isDirect: bool = false,
+  visibility: Visibility = Visibility.private,
+  preset: Preset = Preset.privateChat
 ): Future[CreateRoomRes] {.fastsync.} =
   let
     req = newCreateRoomReq(
@@ -63,7 +71,9 @@ proc createRoom*(
       invite,
       invite3pid,
       initialState,
-      isDirect
+      isDirect,
+      visibility,
+      preset
     )
     res = await client.request(req)
   return newCreateRoomRes(res)
