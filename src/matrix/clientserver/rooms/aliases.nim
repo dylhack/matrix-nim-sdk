@@ -14,7 +14,7 @@ proc newRoomAliasReq(
     roomAlias, roomId: string,
   ): PureRequest =
   let
-    target = roomAliasPut.build(client.server, urlParams = [("roomAlias", roomAlias)])
+    target = roomAliasPut.build(client.server, pathParams = [("roomAlias", roomAlias)])
     payload = RoomAliasReq(roomId: roomId)
   return PureRequest(
     endpoint: target,

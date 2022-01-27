@@ -18,7 +18,7 @@ proc newJoinRoomReq(
   client: MatrixClient,
   roomId: string,
   ): PureRequest =
-  let target = roomJoinId.build(client.server, urlParams = [("roomId", roomId)])
+  let target = roomJoinId.build(client.server, pathParams = [("roomId", roomId)])
   return PureRequest(
     endpoint: target,
   )

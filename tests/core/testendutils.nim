@@ -18,7 +18,7 @@ suite "endutils testing":
     )
     let endpoint = filterGet.build(
       server,
-      urlParams = [("userId", "@dylhack:newcircuit.io"), ("filterId", "1")]
+      pathParams = [("userId", "@dylhack:newcircuit.io"), ("filterId", "1")]
     )
     echo $endpoint
     check ($endpoint == expected)
