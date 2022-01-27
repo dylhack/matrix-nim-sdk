@@ -52,3 +52,16 @@ suite "Events":
       except MatrixError as e:
         fail()
         echo e.error
+
+    test "send message":
+      try:
+        let
+          eventType = "test"
+          roomId = "matrix:matrix.org"
+          txnId = ""
+          body = "hello world!"
+          msgtype = MessageType.`m.text`
+          res = client.sendMessage(eventType, roomId, txnId, body, msgtype)
+      except MatrixError as e:
+        fail()
+        echo e.error

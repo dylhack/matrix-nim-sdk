@@ -18,12 +18,20 @@ type
     event*: RoomEvent
   SendRoomEventRes* = object
     eventId*: string
+  SendMessageReq* = object
+    eventType*: string
+    roomId*: string
+    txnId*: string
+    body*: string
+    msgtype*: MessageType
+  SendMessageRes* = object
+    eventId*: string
 
 proc newRoomEventReq(
     client: MatrixClient,
     eventId, roomId: string
   ): PureRequest =
-  let target = roomEventGet.build(client.server, urlParams = [("eventId", eventId), ("roomId", roomId)])
+  let target = roomEventGet.build(client.server, pathParams = [("eventId", eventId), ("roomId", roomId)])
   return PureRequest(endpoint: target)
 
 proc newSendRoomEventReq(
@@ -32,8 +40,24 @@ proc newSendRoomEventReq(
     event: RoomEvent
   ): PureRequest =
   let
-    target = roomEventGet.build(client.server, urlParams = [("eventType", eventType), ("roomId", roomId), ("stateKey", stateKey)])
+    target = roomEventStateKeyPut.build(client.server, pathParams = [("eventType", eventType), ("roomId", roomId), ("stateKey", stateKey)])
     payload = event.toJson()
+  return PureRequest(
+    endpoint: target,
+    data: payload
+  )
+
+proc newSendMessageReq(
+    client: MatrixClient,
+    eventType, roomId, txnId, body: string,
+    msgtype: MessageType
+  ): PureRequest =
+  let
+    target = roomEventTxnIdPut.build(client.server, pathParams = [("eventType", eventType), ("roomId", roomId), ("txnId", txnId)])
+    payload = SendMessageReq(
+      body: body,
+      msgtype: $msgtype
+    )
   return PureRequest(
     endpoint: target,
     data: payload
@@ -44,6 +68,9 @@ proc newRoomEventRes(res: PureResponse): RoomEventRes =
 
 proc newSendRoomEventRes(res: PureResponse): SendRoomEventRes =
   return res.body.fromJson(SendRoomEventRes)
+
+proc newSendMessageRes(res: PureResponse): SendMessageRes =
+  return res.body.fromJson(SendMessageRes)
 
 proc getRoomEvent*(
     client: MatrixClient,
@@ -74,3 +101,20 @@ proc sendRoomEvent*(
     )
     res = await client.request(req)
   return newSendRoomEventRes(res)
+
+proc sendMessage*(
+    client: MatrixClient,
+    eventType, roomId, txnId, body: string,
+    msgtype: MessageType
+  ): Future[SendRoomEventRes] {.fastsync.} =
+  let
+    req = newSendRoomEventReq(
+      client,
+      eventType,
+      roomId,
+      txnId,
+      body,
+      msgtype
+    )
+    res = await client.request(req)
+  return newSendMessageRes(res)
