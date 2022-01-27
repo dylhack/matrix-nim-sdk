@@ -1,3 +1,3 @@
-import rooms/[creation, aliases, membership]
+import rooms/[creation, aliases, membership, types]
 
-export creation, aliases, membership
+export creation, aliases, membership, types

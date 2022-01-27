@@ -1,3 +1,3 @@
-import events/[sync]
+import events/[sync, room, types]
 
-export sync
+export sync, room, types

@@ -1,3 +1,3 @@
-import clientauth/[account, login]
+import clientauth/[account, login, types]
 
-export account, login
+export account, login, types
