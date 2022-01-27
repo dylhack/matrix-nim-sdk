@@ -26,6 +26,10 @@ type
     msgtype*: MessageType
   SendMessageRes* = object
     eventId*: string
+  RoomStateReq* = object
+    roomId*: string
+  RoomStateRes* = object
+    events*: seq[StateEvent]
 
 proc newRoomEventReq(
     client: MatrixClient,
@@ -56,12 +60,19 @@ proc newSendMessageReq(
     target = roomEventTxnIdPut.build(client.server, pathParams = [("eventType", eventType), ("roomId", roomId), ("txnId", txnId)])
     payload = SendMessageReq(
       body: body,
-      msgtype: $msgtype
+      msgtype: msgtype
     )
   return PureRequest(
     endpoint: target,
-    data: payload
+    data: payload.toJson()
   )
+
+proc newRoomStateReq(
+    client: MatrixClient,
+    roomId: string
+  ): PureRequest =
+  let target = roomStateGet.build(client.server, pathParams = ("roomId", roomId))
+  return PureRequest(endpoint: target)
 
 proc newRoomEventRes(res: PureResponse): RoomEventRes =
   return res.body.fromJson(RoomEventRes)
@@ -71,6 +82,9 @@ proc newSendRoomEventRes(res: PureResponse): SendRoomEventRes =
 
 proc newSendMessageRes(res: PureResponse): SendMessageRes =
   return res.body.fromJson(SendMessageRes)
+
+proc newRoomStateRes(res: PureResponse): RoomStateRes =
+  return res.body.fromJson(RoomStateRes)
 
 proc getRoomEvent*(
     client: MatrixClient,
@@ -106,9 +120,9 @@ proc sendMessage*(
     client: MatrixClient,
     eventType, roomId, txnId, body: string,
     msgtype: MessageType
-  ): Future[SendRoomEventRes] {.fastsync.} =
+  ): Future[SendMessageRes] {.fastsync.} =
   let
-    req = newSendRoomEventReq(
+    req = newSendMessageReq(
       client,
       eventType,
       roomId,
@@ -118,3 +132,15 @@ proc sendMessage*(
     )
     res = await client.request(req)
   return newSendMessageRes(res)
+
+proc getRoomState*(
+    client: MatrixClient,
+    roomId: string
+  ): Future[RoomStateRes] {.fastsync.} =
+  let
+    req = newRoomStateReq(
+      client,
+      roomId
+    )
+    res = await client.request(req)
+  return newRoomStateRes(res)

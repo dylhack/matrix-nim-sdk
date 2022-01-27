@@ -65,3 +65,13 @@ suite "Events":
       except MatrixError as e:
         fail()
         echo e.error
+
+  suite "Room state":
+    test "get room state":
+      try:
+        let
+          roomId = "matrix:matrix.org"
+          res = client.getRoomState(roomId)
+      except MatrixError as e:
+        fail()
+        echo e.error
