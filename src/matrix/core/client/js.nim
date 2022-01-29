@@ -71,13 +71,18 @@ proc handleRateLimit(
         code: cast[HttpCode](casted),
         headers: headers)
 
+proc addHeaders*(client: MatrixClient, headers = defaultHeaders) =
+  for (key, value) in headers:
+    client.http.headers[key] = value
+
 ## Create a new blocking MatrixClient.
 proc newMatrixClient*(homeserver: string): SyncMatrixClient =
   let server = parseUri(homeserver)
-  return SyncMatrixClient(
+  result = SyncMatrixClient(
     http: newJsHttpClient(),
     server: server
   )
+  result.addHeaders()
 
 ## Create a new MatrixClient with a token already preset.
 proc newMatrixClient*(homeserver: string, token: string): SyncMatrixClient =
@@ -87,10 +92,11 @@ proc newMatrixClient*(homeserver: string, token: string): SyncMatrixClient =
 ## Create a new non-blocking MatrixClient.
 proc newAsyncMatrixClient*(homeserver: string): AsyncMatrixClient =
   let server = parseUri(homeserver)
-  return AsyncMatrixClient(
+  result = AsyncMatrixClient(
     http: newJsAsyncHttpClient(),
     server: server
   )
+  result.addHeaders()
 
 ## Create a new non-blocking MatrixClient with a token already set.
 proc newAsyncMatrixClient*(homeserver: string, token: string): AsyncMatrixClient =
