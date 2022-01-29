@@ -3,7 +3,7 @@
 when defined(js):
   import std/jsheaders
 import std/[uri, strformat, httpcore]
-import jsony
+import pkg/jsony
 import ../endutils
 
 type
