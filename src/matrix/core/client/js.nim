@@ -4,8 +4,7 @@
 import
   std/[dom, strformat, uri, jsheaders, httpcore],
   pkg/jsony,
-  pkg/nodejs/jsmultisync,
-  pkg/nodejs/experimental/jshttpclient
+  pkg/nodejs/jshttpclient,
   pure,
   ../endutils,
   ../../asyncutils
@@ -24,25 +23,29 @@ proc newRequest(data: PureRequest): JsRequest =
     body = data.data.cstring
   )
 
+proc setTimeoutSync(ms: int) = {.emit: "setTimeout(function() { }, `ms`);".}
+
 proc setTimeoutAsync(ms: int): Future[void] =
   let promise = newPromise() do (res: proc(): void):
     discard setTimeout(res, ms)
   return promise
 
 proc handleRateLimit(
-  client: JsMatrixClient,
-  req: PureRequest,
+  client: MatrixClient,
+  request: PureRequest,
   payload: string
-): Future[PureResponse] {.async.} =
+): Future[PureResponse] {.fastsync.} =
   var parsed = payload.fromJson(RateLimitError)
 
   while true:
-    await setTimeoutAsync(parsed.retryAfterMs)
-    var req: Request = newRequest(req)
-    req.headers = client.headers
+    when client is AsyncMatrixClient:
+      await setTimeoutAsync(parsed.retryAfterMs)
+    else:
+      setTimeoutSync(parsed.retryAfterMs)
     let
-      resp = await client.request(req)
-      payload = await resp.text()
+      req = newRequest(request)
+      resp = await client.http.request(req)
+      body = await resp.responseText
 
     if not resp.ok:
       let str = $body
@@ -71,7 +74,7 @@ proc handleRateLimit(
 ## Create a new blocking MatrixClient.
 proc newMatrixClient*(homeserver: string): SyncMatrixClient =
   let server = parseUri(homeserver)
-  return JsMatrixClient(
+  return SyncMatrixClient(
     http: newJsHttpClient(),
     server: server
   )
@@ -84,7 +87,7 @@ proc newMatrixClient*(homeserver: string, token: string): SyncMatrixClient =
 ## Create a new non-blocking MatrixClient.
 proc newAsyncMatrixClient*(homeserver: string): AsyncMatrixClient =
   let server = parseUri(homeserver)
-  return JsMatrixClient(
+  return AsyncMatrixClient(
     http: newJsAsyncHttpClient(),
     server: server
   )
@@ -96,20 +99,19 @@ proc newAsyncMatrixClient*(homeserver: string, token: string): AsyncMatrixClient
 
 ## This procedure performs a HTTP request.
 proc request*(
-  client: JsMatrixClient,
-  req: PureRequest
-): Future[PureResponse] {.async.} =
-  var req: Request = newRequest(req)
-  req.headers = client.headers
+  client: MatrixClient,
+  request: PureRequest
+): Future[PureResponse] {.fastsync.} =
   let
-    resp = await client.request(req)
-    payload = await resp.text()
+    req = newRequest(request)
+    resp = await client.http.request(req)
+    payload = await resp.responseText
 
   if not resp.ok:
     # Catch Matrix errors the server gives us
     let err = buildMxError($payload)
     if err.errcode == "M_LIMIT_EXCEEDED":
-      return await client.handleRateLimit(req, $payload)
+      return await client.handleRateLimit(request, $payload)
     raise err
   # Parse their response and give it back as a PureResponse
   let

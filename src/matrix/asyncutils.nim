@@ -1,6 +1,7 @@
 when defined(js):
   import std/asyncjs
-  export asyncjs
+  import nodejs/jsmultisync
+  export asyncjs, jsmultisync
 else:
   import std/asyncdispatch
   export asyncdispatch
