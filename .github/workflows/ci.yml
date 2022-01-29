@@ -69,7 +69,7 @@ jobs:
           nim c -r tests/testcore.nim
           nim c -r tests/testclientserver.nim
 
-  test-js:
+  build-js:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -95,5 +95,5 @@ jobs:
 
       - name: Run JS backend tests
         run: |
-          nim js -r tests/testcore.nim
-          nim js -r tests/testclientserver.nim
+          nim js tests/testcore.nim
+          nim js tests/testclientserver.nim
