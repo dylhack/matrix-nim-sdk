@@ -9,6 +9,7 @@ srcDir = "src"
 # Dependencies
 requires "nim >= 1.5.1"
 requires "jsony 1.0.5"
+requires "nodejs"
 
 when defined(js):
   requires "nodejs >= 16.0.0"
