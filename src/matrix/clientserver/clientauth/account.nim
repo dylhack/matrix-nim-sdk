@@ -8,24 +8,24 @@ import ../../asyncutils
 import types
 
 type
-  ChangePasswordReq = object
-    new_password: string
-    logout_devices: bool
+  ChangePasswordReq* = object
+    new_password*: string
+    logout_devices*: bool
     auth: AccountAuth
-  DeactivateReq = object
-    id_server: Option[string]
-    auth: AccountAuth
-  RegisterRes = object
+  DeactivateReq* = object
+    id_server*: Option[string]
+    auth*: AccountAuth
+  RegisterRes* = object
     userId*, accessToken*, deviceId*: string
-  RegisterReq = object of RootObj
-    auth: AuthData
-    kind: string
-    password: string
-    device_id: Option[string]
-  RegisterReqName = object of RegisterReq
-    username: Option[string]
-  UsernameAvailableRes = object
-    availability: bool
+  RegisterReq* = object of RootObj
+    auth*: AuthData
+    kind*: string
+    password*: string
+    device_id*: Option[string]
+  RegisterReqName* = object of RegisterReq
+    username*: Option[string]
+  UsernameAvailableRes* = object
+    availability*: bool
 
 const
   PASS_AUTH = "m.login.password"
