@@ -23,5 +23,5 @@ type
     baseUrl*: string
 
   DiscoveryInfo* = object
-    homeserver*: HomeServerInfo
+    `m.homeserver`*: HomeServerInfo
     identityServer*: Option[IdentityServerInfo]
