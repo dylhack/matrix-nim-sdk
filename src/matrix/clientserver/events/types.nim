@@ -1,10 +1,7 @@
 import std/options
+import ../types
 
 type
-  Event* = object of RootObj
-    content*: string
-    `type`*: string
-
   UnsignedData* = object
     age*: int
     redactedBecause*: Event
