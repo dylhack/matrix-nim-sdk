@@ -45,9 +45,9 @@ proc handleRateLimit(
     let
       req = newRequest(request)
       resp = await client.http.request(req)
-      body = await resp.responseText
+      body = resp.responseText
 
-    if not resp.ok:
+    if not resp.status.is2xx():
       let str = $body
       let err = buildMxError(str)
       if err.errcode == "M_LIMIT_EXCEEDED":
@@ -56,9 +56,7 @@ proc handleRateLimit(
       else:
         raise err
     else:
-      let
-        casted = cast[int](resp.status)
-        ckeys = resp.headers.keys()
+      let ckeys = resp.headers.keys()
       var headers = newHttpHeaders()
       for ckey in ckeys:
         let
@@ -68,7 +66,7 @@ proc handleRateLimit(
         headers[key] = val
       return PureResponse(
         body: $payload,
-        code: cast[HttpCode](casted),
+        code: resp.status,
         headers: headers)
 
 proc addHeaders*(client: MatrixClient, headers = defaultHeaders) =
@@ -111,18 +109,16 @@ proc request*(
   let
     req = newRequest(request)
     resp = await client.http.request(req)
-    payload = await resp.responseText
+    payload = resp.responseText
 
-  if not resp.ok:
+  if not resp.status.is2xx():
     # Catch Matrix errors the server gives us
     let err = buildMxError($payload)
     if err.errcode == "M_LIMIT_EXCEEDED":
       return await client.handleRateLimit(request, $payload)
     raise err
   # Parse their response and give it back as a PureResponse
-  let
-    casted = cast[int](resp.status)
-    ckeys = resp.headers.keys()
+  let ckeys = resp.headers.keys()
   var headers = newHttpHeaders()
   for ckey in ckeys:
     let
@@ -132,7 +128,7 @@ proc request*(
     headers[key] = val
   return PureResponse(
     body: $payload,
-    code: cast[HttpCode](casted),
+    code: resp.status,
     headers: headers)
 
 export pure
