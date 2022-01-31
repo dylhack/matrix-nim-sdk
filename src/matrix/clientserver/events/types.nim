@@ -1,4 +1,4 @@
-import std/options
+import std/[tables, options]
 import ../types
 
 type
@@ -64,7 +64,7 @@ type
     limited*: bool
     prevBatch*: string
 
-  JoinedRooms* = object
+  JoinedRoom* = object
     summary*: RoomSummary
     state*: State
     timeline*: Timeline
@@ -72,18 +72,18 @@ type
     accountData*: AccountData
     unreadNotifications*: UnreadNotificationCounts
 
-  InvitedRooms* = object
+  InvitedRoom* = object
     events*: seq[StrippedState]
 
-  LeftRooms* = object
+  LeftRoom* = object
     state*: State
     timeline*: Timeline
     accountData*: AccountData
 
   Rooms* = object
-    join*: JoinedRooms
-    invite*: InvitedRooms
-    leave*: LeftRooms
+    join*: Table[string, JoinedRoom]
+    invite*: Table[string, InvitedRoom]
+    leave*: Table[string, LeftRoom]
 
   EventSequence* = object
     events*: seq[Event]
