@@ -16,11 +16,11 @@ type
 MatrixClient.setAsync(AsyncMatrixClient)
 MatrixClient.setSync(SyncMatrixClient)
 
-proc newRequest(data: PureRequest): JsRequest =
+proc newRequest(req: PureRequest): JsRequest =
   return newJsRequest(
-    url = ($data.endpoint.target).cstring,
-    `method` = data.endpoint.httpMethod,
-    body = data.data.cstring
+    url = ($req.endpoint.target).cstring,
+    `method` = req.endpoint.httpMethod,
+    body = req.data.cstring
   )
 
 proc setTimeoutSync(ms: int) = {.emit: "setTimeout(function() { }, `ms`);".}
