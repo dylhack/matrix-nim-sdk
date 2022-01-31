@@ -3,7 +3,7 @@ import ../types
 
 type
   UnsignedData* = object
-    age*: int
+    age*: int64
     redactedBecause*: Event
     transactionId*: string
     inviteRoomState*: seq[StrippedState]
@@ -11,7 +11,7 @@ type
   RoomEvent* = object of Event
     eventId*: string
     sender*: string
-    originServerTs*: int
+    originServerTs*: int64
     unsigned*: UnsignedData
 
   Membership* = enum
