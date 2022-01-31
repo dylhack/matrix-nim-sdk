@@ -2,6 +2,7 @@ import pkg/jsony
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import std/tables
 import types
 
 type
@@ -18,7 +19,7 @@ type
     accountData*: AccountData
     toDevice*: ToDevice
     deviceLists*: DeviceLists
-    deviceOneTimeKeysCount*: string
+    deviceOneTimeKeysCount*: Table[string, int]
 
 proc newSyncReq(
     client: MatrixClient,
