@@ -26,6 +26,10 @@ type
     username*: Option[string]
   UsernameAvailableRes* = object
     availability*: bool
+  WhoAmIRes* = object
+    deviceId*: string
+    userId*: string
+
 
 const
   PASS_AUTH = "m.login.password"
@@ -230,3 +234,20 @@ proc deactivate*(
   else:
     discard future
     return true
+
+proc newWhoAmIReq(
+    client: MatrixClient,
+  ): PureRequest =
+  let target = whoAmI.build(client.server)
+  return PureRequest(endpoint: target)
+
+proc newWhoAmIRes(res: PureResponse): WhoAmIRes =
+  return res.body.fromJson(WhoAmIRes)
+
+proc whoAmI*(
+  client: MatrixClient,
+): Future[WhoAmIRes] {.fastSync.} =
+  let
+    req = newWhoAmIReq(client)
+    res = await client.request(req)
+  return newWhoAmIRes(res)
