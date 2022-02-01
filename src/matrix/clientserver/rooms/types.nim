@@ -1,5 +1,3 @@
-import ../types
-
 type
   Preset* = enum
     privateChat = "private_chat", publicChat = "public_chat", trustedPrivateChat = "trusted_private_chat"
@@ -12,6 +10,3 @@ type
     idAccessToken*: string
     medium*: string
     address*: string
-
-  StateEvent* = object of Event
-    stateKey*: string
