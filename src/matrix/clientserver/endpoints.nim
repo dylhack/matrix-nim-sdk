@@ -35,7 +35,7 @@ const
 
   ## 5.8 Current account information
   ## https://matrix.org/docs/spec/client_server/r0.6.1#current-account-information
-  whoAmI* = newClDraft("/account/whoami", HttpGet)
+  whoAmIGet* = newClDraft("/account/whoami", HttpGet)
 
   ## 6 Capabilities negotiation
   ## https://matrix.org/docs/spec/client_server/r0.6.1#capabilities-negotiation

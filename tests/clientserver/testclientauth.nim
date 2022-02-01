@@ -93,3 +93,13 @@ suite "5.0 Client Authentication":
       except MatrixError as e:
         fail()
         echo e.error
+
+    test "client can check who am i":
+      try:
+        let loginRes = client.login(user, pass)
+        client.setToken(loginRes.accessToken)
+        let whoAmIResp = client.whoAmI()
+        check whoAmIResp.userId == user
+      except MatrixError as e:
+        fail()
+        echo e.error
