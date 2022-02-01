@@ -30,6 +30,7 @@ type
   RoomStateReq* = object
     roomId*: string
   RoomStateRes* = object
+    roomId*: string # not in Spec
     events*: seq[StateEvent]
 
 proc newRoomEventReq(
@@ -84,8 +85,8 @@ proc newSendRoomEventRes(res: PureResponse): SendRoomEventRes =
 proc newSendMessageRes(res: PureResponse): SendMessageRes =
   return res.body.fromJson(SendMessageRes)
 
-proc newRoomStateRes(res: PureResponse): RoomStateRes =
-  return RoomStateRes(events: res.body.fromJson(seq[StateEvent]))
+proc newRoomStateRes(roomId: string, res: PureResponse): RoomStateRes =
+  return RoomStateRes(roomId: roomId, events: res.body.fromJson(seq[StateEvent]))
 
 proc getRoomEvent*(
     client: MatrixClient,
@@ -144,4 +145,4 @@ proc getRoomState*(
       roomId
     )
     res = await client.request(req)
-  return newRoomStateRes(res)
+  return newRoomStateRes(roomId, res)
