@@ -2,6 +2,7 @@ import pkg/jsony
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import ../sharedtypes
 import types
 
 type
@@ -84,7 +85,7 @@ proc newSendMessageRes(res: PureResponse): SendMessageRes =
   return res.body.fromJson(SendMessageRes)
 
 proc newRoomStateRes(res: PureResponse): RoomStateRes =
-  return res.body.fromJson(RoomStateRes)
+  return RoomStateRes(events: res.body.fromJson(seq[StateEvent]))
 
 proc getRoomEvent*(
     client: MatrixClient,

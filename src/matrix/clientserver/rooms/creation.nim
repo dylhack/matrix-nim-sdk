@@ -2,6 +2,7 @@ import pkg/jsony
 import ../../core
 import ../endpoints
 import ../../asyncutils
+import ../sharedtypes
 import types
 
 type
