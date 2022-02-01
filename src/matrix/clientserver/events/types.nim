@@ -1,49 +1,7 @@
-import std/[tables, options]
-import ../types
+import std/tables
+import ../sharedtypes
 
 type
-  UnsignedData* = object
-    age*: int64
-    redactedBecause*: Event
-    transactionId*: string
-    inviteRoomState*: seq[StrippedState]
-
-  RoomEvent* = object of Event
-    eventId*: string
-    sender*: string
-    originServerTs*: int64
-    unsigned*: UnsignedData
-
-  Membership* = enum
-    invite = "invite", join = "join", knock = "knock", leave = "leave", ban = "ban"
-
-  Signed* = object
-    mxId*: string
-    signatures*: string
-    token*: string
-
-  Invite* = object
-    displayName*: string
-    signed*: Signed
-
-  EventContent* = object
-    avatarUrl*: string
-    displayname*: Option[string]
-    membership*: Membership
-    isDirect*: bool
-    thirdPartyInvite*: Invite
-    unsigned*: UnsignedData
-
-  StateEvent* = object of RoomEvent
-    stateKey*: string
-    prevContent*: EventContent
-
-  StrippedState* = object
-    content*: EventContent
-    stateKey*: string
-    `type`*: string
-    sender*: string
-
   PresenceState* = enum
     offline = "offline", online = "online", unavailable = "unavailable"
 
