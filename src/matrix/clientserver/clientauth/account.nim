@@ -238,7 +238,7 @@ proc deactivate*(
 proc newWhoAmIReq(
     client: MatrixClient,
   ): PureRequest =
-  let target = whoAmI.build(client.server)
+  let target = whoAmIGet.build(client.server)
   return PureRequest(endpoint: target)
 
 proc newWhoAmIRes(res: PureResponse): WhoAmIRes =
