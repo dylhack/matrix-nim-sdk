@@ -8,6 +8,8 @@ import
   pure,
   ../endutils,
   ../../asyncutils
+include ../../jsonyutils
+
 
 type
   AsyncMatrixClient* = MatrixClient[JsAsyncHttpClient]
@@ -71,7 +73,7 @@ proc handleRateLimit(
 
 proc addHeaders*(client: MatrixClient, headers = defaultHeaders) =
   for (key, value) in headers:
-    client.http.headers[key] = value
+    client.http.headers[key.cstring] = value.cstring
 
 ## Create a new blocking MatrixClient.
 proc newMatrixClient*(homeserver: string): SyncMatrixClient =

@@ -1,7 +1,9 @@
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
+import
+  ../../core,
+  ../endpoints,
+  ../../asyncutils
+include ../../jsonyutils
+
 
 type
   JoinedRoomsRes* = object

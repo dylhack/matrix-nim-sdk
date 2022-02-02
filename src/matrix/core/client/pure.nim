@@ -2,9 +2,12 @@
 ## (JavaScript, native, etc.)
 when defined(js):
   import std/jsheaders
-import std/[uri, strformat, httpcore]
-import pkg/jsony
-import ../endutils
+import
+  std/[uri, strformat, httpcore],
+  pkg/jsony,
+  ../endutils
+include ../../jsonyutils
+
 
 type
   MatrixErrorRaw* = object of RootObj
@@ -58,4 +61,3 @@ proc buildMxError*(body: string): MatrixError =
     return MatrixError(errcode: parsed.errcode, error: parsed.error)
   except:
     raise UnknownError(body: body)
-

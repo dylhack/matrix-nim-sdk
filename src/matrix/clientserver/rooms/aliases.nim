@@ -1,8 +1,10 @@
-import std/httpcore
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
+import
+  std/httpcore,
+  ../../core,
+  ../endpoints,
+  ../../asyncutils
+include ../../jsonyutils
+
 
 type
   RoomAliasReq* = object

@@ -1,9 +1,11 @@
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
-import ../sharedtypes
-import types
+import
+  ../../core,
+  ../endpoints,
+  ../../asyncutils,
+  ../sharedtypes,
+  types
+include ../../jsonyutils
+
 
 type
   CreateRoomReq* = object

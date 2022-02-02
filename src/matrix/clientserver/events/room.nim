@@ -1,9 +1,11 @@
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
-import ../sharedtypes
-import types
+import
+  ../../core,
+  ../endpoints,
+  ../../asyncutils,
+  ../sharedtypes,
+  types
+include ../../jsonyutils
+
 
 type
   RoomEventReq* = object
@@ -20,9 +22,6 @@ type
   SendRoomEventRes* = object
     eventId*: string
   SendMessageReq* = object
-    eventType*: string
-    roomId*: string
-    txnId*: string
     body*: string
     msgtype*: MessageType
   SendMessageRes* = object

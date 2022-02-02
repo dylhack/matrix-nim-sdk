@@ -1,11 +1,13 @@
 ## 5.6 Account registration and management
 ## https://matrix.org/docs/spec/client_server/r0.6.1#account-registration-and-management
-import std/options
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
-import types
+import
+  std/options,
+  ../../core,
+  ../endpoints,
+  ../../asyncutils,
+  types
+include ../../jsonyutils
+
 
 type
   ChangePasswordReq* = object

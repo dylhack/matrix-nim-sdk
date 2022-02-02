@@ -1,9 +1,11 @@
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
-import std/tables
-import types
+import
+  ../../core,
+  ../endpoints,
+  ../../asyncutils,
+  std/tables,
+  types
+include ../../jsonyutils
+
 
 type
   SyncReq* = object

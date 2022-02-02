@@ -1,9 +1,10 @@
-import std/[httpcore, options]
-import pkg/jsony
-import ../../core
-import ../endpoints
-import ../../asyncutils
-import types
+import
+  std/[httpcore, options],
+  ../../core,
+  ../../asyncutils,
+  ../endpoints,
+  types
+include ../../jsonyutils
 
 type
   LoginReq* = object
