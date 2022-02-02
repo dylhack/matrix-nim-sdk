@@ -72,10 +72,10 @@ const
     "/rooms/%roomId/state/%eventType/%stateKey",
     HttpPut)
   roomEventStateKeyPut* = newClDraft(
-    "/rooms/%roomId}/send/%eventType/%stateKey",
+    "/rooms/%roomId/send/%eventType/%stateKey",
     HttpPut)
   roomEventTxnIdPut* = newClDraft(
-    "/rooms/%roomId}/send/%eventType/%txnId",
+    "/rooms/%roomId/send/%eventType/%txnId",
     HttpPut)
   ## 9.7 Redactions
   ## https://matrix.org/docs/spec/client_server/r0.6.1#redactions
@@ -152,7 +152,7 @@ const
 
   ## 13.4.2 Typing Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id51
-  typingPut* = newClDraft("/rooms/{roomId}/typing/{userId}", HttpPut)
+  typingPut* = newClDraft("/rooms/%roomId/typing/%userId", HttpPut)
 
   ## 13.5.2 Receipts Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id55
@@ -258,7 +258,7 @@ const
 
   ## 13.20.1 Server Administration Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id130
-  whoIs* = newClDraft("/admin/whois/{userId}", HttpGet)
+  whoIs* = newClDraft("/admin/whois/%userId", HttpGet)
 
   ## 13.21.1 Event Context Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id132
@@ -277,7 +277,7 @@ const
   thirdPartyProtocolLocation* = newClDraft(
     "/thirdparty/location/%protocol",
     HttpGet)
-  thirdPartyProtocolUser* = newClDraft("/thirdparty/user/{protocol}", HttpGet)
+  thirdPartyProtocolUser* = newClDraft("/thirdparty/user/%protocol", HttpGet)
   thirdPartyLocation* = newClDraft("/thirdparty/location", HttpGet)
   thirdPartyUser* = newClDraft("/thirdparty/user", HttpGet)
 
