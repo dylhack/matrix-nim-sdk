@@ -25,7 +25,6 @@ suite "Events":
     test "sync":
       try:
         let res = client.sync()
-        echo res
       except MatrixError as e:
         fail()
         echo e.error
@@ -75,3 +74,14 @@ suite "Events":
       except MatrixError as e:
         fail()
         echo e.error
+
+    test "get room messages":
+      try:
+        let
+          syncRes = client.sync()
+          roomId = "matrix:matrix.org"
+          res = client.getRoomMessages(roomId, dir = Direction.forward, `from` = syncRes.nextBatch)
+      except MatrixError as e:
+        fail()
+        echo e.error
+

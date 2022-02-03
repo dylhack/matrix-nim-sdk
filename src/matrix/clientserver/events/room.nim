@@ -1,8 +1,8 @@
 import
+  std/json,
   ../../core,
   ../endpoints,
   ../../asyncutils,
-  ../sharedtypes,
   types
 include ../../jsonyutils
 
@@ -14,23 +14,39 @@ type
   RoomEventRes* = object
     content*: string
     `type`*: string
+
   SendRoomEventReq* = object
     eventType*: string
     roomId*: string
     stateKey*: string
-    event*: RoomEvent
+    event*: JsonNode # TODO: implement event types
   SendRoomEventRes* = object
     eventId*: string
+
   SendMessageReq* = object
     body*: string
     msgtype*: MessageType
   SendMessageRes* = object
     eventId*: string
+
   RoomStateReq* = object
     roomId*: string
   RoomStateRes* = object
     roomId*: string # not in Spec
-    events*: seq[StateEvent]
+    events*: seq[ClientEvent]
+
+  RoomMessagesReq* = object
+    roomId*: string
+    dir*: Direction
+    filter*: string
+    `from`*: string
+    limit*: int
+    to*: string
+  RoomMessagesRes* = object
+    chunk*: seq[ClientEvent]
+    `end`*: string
+    start*: string
+    state*: seq[ClientEvent]
 
 proc newRoomEventReq(
     client: MatrixClient,
@@ -42,7 +58,7 @@ proc newRoomEventReq(
 proc newSendRoomEventReq(
     client: MatrixClient,
     eventType, roomId, stateKey: string,
-    event: RoomEvent
+    event: JsonNode
   ): PureRequest =
   let
     target = roomEventStateKeyPut.build(client.server, pathParams = [("eventType", eventType), ("roomId", roomId), ("stateKey", stateKey)])
@@ -75,6 +91,26 @@ proc newRoomStateReq(
   let target = roomStateGet.build(client.server, pathParams = ("roomId", roomId))
   return PureRequest(endpoint: target)
 
+proc newRoomMessagesReq(
+    client: MatrixClient,
+    roomId, filter, `from`, to: string,
+    dir: Direction,
+    limit: int
+  ): PureRequest =
+  let
+    target = roomMessagesGet.build(client.server, pathParams = ("roomId", roomId))
+    payload = RoomMessagesReq(
+      dir: dir,
+      filter: filter,
+      `from`: `from`,
+      limit: limit,
+      to: to
+    )
+  return PureRequest(
+    endpoint: target,
+    data: payload.toJson()
+  )
+
 proc newRoomEventRes(res: PureResponse): RoomEventRes =
   return res.body.fromJson(RoomEventRes)
 
@@ -85,7 +121,7 @@ proc newSendMessageRes(res: PureResponse): SendMessageRes =
   return res.body.fromJson(SendMessageRes)
 
 proc newRoomStateRes(roomId: string, res: PureResponse): RoomStateRes =
-  return RoomStateRes(roomId: roomId, events: res.body.fromJson(seq[StateEvent]))
+  return RoomStateRes(roomId: roomId, events: res.body.fromJson(seq[ClientEvent]))
 
 proc getRoomEvent*(
     client: MatrixClient,
@@ -103,7 +139,7 @@ proc getRoomEvent*(
 proc sendRoomEvent*(
     client: MatrixClient,
     eventType, roomId: string,
-    event: RoomEvent,
+    event: JsonNode,
     stateKey: string = ""
   ): Future[SendRoomEventRes] {.fastsync.} =
   let
@@ -142,6 +178,26 @@ proc getRoomState*(
     req = newRoomStateReq(
       client,
       roomId
+    )
+    res = await client.request(req)
+  return newRoomStateRes(roomId, res)
+
+proc getRoomMessages*(
+  client: MatrixClient,
+  roomId, `from`: string,
+  dir: Direction,
+  filter, to: string = "",
+  limit: int = 10
+): Future[RoomStateRes] {.fastsync.} =
+  let
+    req = newRoomMessagesReq(
+      client,
+      roomId,
+      filter,
+      `from`,
+      to,
+      dir,
+      limit
     )
     res = await client.request(req)
   return newRoomStateRes(roomId, res)
