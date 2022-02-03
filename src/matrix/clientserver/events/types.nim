@@ -108,9 +108,11 @@ type
     forward = "f", backward = "b"
 
   ClientEvent* = object
+    content*: JsonNode
     eventId*: string
     originServerTs*: int64
     roomId*: string
     sender*: string
     stateKey*: Option[string]
+    `type`*: string
     unsigned*: Option[UnsignedData]
