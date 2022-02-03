@@ -2,23 +2,25 @@ import
   ../../core,
   ../endpoints,
   ../../asyncutils,
-  ../sharedtypes,
   types
 include ../../jsonyutils
 
 
 type
   CreateRoomReq* = object
-    roomAliasName*: string
-    name*: string
-    topic*: string
+    # creationContent*: TODO
+    initialState: seq[StateEvent]
     invite*: seq[string]
     invite3pid*: seq[Invite3pid]
-    roomVersion*: string
-    initialState: seq[StateEvent]
     isDirect*: bool
-    visibility*: Visibility
+    name*: string
+    # powerLevelContentOverride*: TODO
     preset*: Preset
+    roomAliasName*: string
+    roomVersion*: string
+    topic*: string
+    visibility*: Visibility
+
   CreateRoomRes* = object
     roomId*: string
 
