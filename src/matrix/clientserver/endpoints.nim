@@ -135,8 +135,8 @@ const
 
   ## 11.2 Profiles
   ## https://matrix.org/docs/spec/client_server/r0.6.1#profiles
-  profileNamePut* = newClDraft("/profile/%userId/displayname", HttpPut)
-  profileNameGet* = newClDraft("/profile/%userId/displayname", HttpGet)
+  displaynamePut* = newClDraft("/profile/%userId/displayname", HttpPut)
+  displaynameGet* = newClDraft("/profile/%userId/displayname", HttpGet)
   profileAvatarPut* = newClDraft("/profile/%userId/avatar_url", HttpPut)
   profileAvatarGet* = newClDraft("/profile/%userId/avatar_url", HttpGet)
   profileGet* = newClDraft("/profile/%userId", HttpGet)
