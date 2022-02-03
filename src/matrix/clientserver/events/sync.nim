@@ -15,13 +15,13 @@ type
     setPresence*: PresenceState
     timeout*: int
   SyncRes* = object
-    nextBatch*: string
-    rooms*: Rooms
-    presence*: Presence
     accountData*: AccountData
-    toDevice*: ToDevice
     deviceLists*: DeviceLists
     deviceOneTimeKeysCount*: Table[string, int]
+    nextBatch*: string
+    presence*: Presence
+    rooms*: Rooms
+    toDevice*: ToDevice
 
 proc newSyncReq(
     client: MatrixClient,

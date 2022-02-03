@@ -1,3 +1,3 @@
-import clientserver/[clientauth, rooms, events, userdata, sharedtypes]
+import clientserver/[clientauth, rooms, events, userdata]
 
-export clientauth, rooms, events, userdata, sharedtypes
+export clientauth, rooms, events, userdata
