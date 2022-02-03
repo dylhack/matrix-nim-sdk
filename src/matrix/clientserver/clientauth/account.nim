@@ -39,8 +39,8 @@ const
 
 proc newRegisterReq(
   client: MatrixClient,
-  username: Option[string],
-  password: string,
+  username: Option[string] = none(string),
+  password: string = "",
   deviceId: Option[string] = none(string)
 ): PureRequest =
   let
@@ -96,15 +96,12 @@ proc register*(
 
 proc registerGuest*(
   client: MatrixClient,
-  password: string,
   deviceId: string = ""
 ): Future[RegisterRes] {.fastSync.} =
   let
     device = if len(deviceId) == 0: none(string) else: some(deviceId)
     req = newRegisterReq(
       client,
-      username = none(string),
-      password = password,
       deviceId = device
     )
     res = await client.request(req)
