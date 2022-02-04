@@ -188,7 +188,7 @@ proc getRoomState*(
 proc getRoomMessages*(
   client: MatrixClient,
   roomId, `from`: string,
-  dir: Direction,
+  dir: Direction = Direction.forward,
   filter, to: string = "",
   limit: int = 10
 ): Future[RoomMessagesRes] {.fastsync.} =
