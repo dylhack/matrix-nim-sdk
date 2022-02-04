@@ -4,7 +4,6 @@
 ## using the multisync pragma.
 import
   std/[os, httpclient, httpcore, uri],
-  pkg/jsony,
   ../endutils,
   pure,
   ../../asyncutils

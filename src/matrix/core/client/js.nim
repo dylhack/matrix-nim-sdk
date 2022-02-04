@@ -3,7 +3,6 @@
 ## procedures and types.
 import
   std/[dom, strformat, uri, jsheaders, httpcore],
-  pkg/jsony,
   pkg/nodejs/jshttpclient,
   pure,
   ../endutils,

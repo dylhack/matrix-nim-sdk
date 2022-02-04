@@ -4,7 +4,6 @@ when defined(js):
   import std/jsheaders
 import
   std/[uri, strformat, httpcore],
-  pkg/jsony,
   ../endutils
 include ../../jsonyutils
 
