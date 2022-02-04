@@ -98,18 +98,8 @@ proc newRoomMessagesReq(
     limit: int
   ): PureRequest =
   let
-    target = roomMessagesGet.build(client.server, pathParams = ("roomId", roomId))
-    payload = RoomMessagesReq(
-      dir: dir,
-      filter: filter,
-      `from`: `from`,
-      limit: limit,
-      to: to
-    )
-  return PureRequest(
-    endpoint: target,
-    data: payload.toJson()
-  )
+    target = roomMessagesGet.build(client.server, pathParams = ("roomId", roomId), queryParams = [("dir", $dir), ("filter", filter), ("from", `from`), ("limit", $limit), ("to", to)])
+  return PureRequest(endpoint: target)
 
 proc newRoomEventRes(res: PureResponse): RoomEventRes =
   return res.body.fromJson(RoomEventRes)
