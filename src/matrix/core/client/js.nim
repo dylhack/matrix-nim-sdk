@@ -31,6 +31,17 @@ proc setTimeoutAsync(ms: int): Future[void] =
     discard setTimeout(res, ms)
   return promise
 
+proc parseHeaders(headers: Headers): HttpHeaders =
+  var httpHeaders = newHttpHeaders()
+  let ckeys = headers.keys()
+  for ckey in ckeys:
+    let
+      cval = headers[ckey]
+      key = $ckey
+      val = $cval
+    httpHeaders[key] = val
+  return httpHeaders
+
 proc handleRateLimit(
   client: MatrixClient,
   request: PureRequest,
@@ -57,18 +68,12 @@ proc handleRateLimit(
       else:
         raise err
     else:
-      let ckeys = resp.headers.keys()
-      var headers = newHttpHeaders()
-      for ckey in ckeys:
-        let
-          cval = resp.headers[ckey]
-          key = $ckey
-          val = $cval
-        headers[key] = val
+      let headers = parseHeaders(resp.headers)
       return PureResponse(
         body: $payload,
         code: resp.status,
-        headers: headers)
+        headers: headers
+      )
 
 proc addHeaders*(client: MatrixClient, headers = defaultHeaders) =
   for (key, value) in headers:
@@ -119,17 +124,11 @@ proc request*(
       return await client.handleRateLimit(request, $payload)
     raise err
   # Parse their response and give it back as a PureResponse
-  let ckeys = resp.headers.keys()
-  var headers = newHttpHeaders()
-  for ckey in ckeys:
-    let
-      cval = resp.headers[ckey]
-      key = $ckey
-      val = $cval
-    headers[key] = val
+  let headers = parseHeaders(resp.headers)
   return PureResponse(
     body: $payload,
     code: resp.status,
-    headers: headers)
+    headers: headers
+  )
 
 export pure
