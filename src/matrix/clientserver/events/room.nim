@@ -1,5 +1,5 @@
 import
-  std/json,
+  std/[options, json],
   ../../core,
   ../endpoints,
   ../../asyncutils,
@@ -44,7 +44,7 @@ type
     to*: string
   RoomMessagesRes* = object
     chunk*: seq[ClientEvent]
-    `end`*: string
+    `end`*: Option[string]
     start*: string
     state*: seq[ClientEvent]
 
