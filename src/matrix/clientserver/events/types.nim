@@ -46,7 +46,7 @@ type
   ClientEventWithoutRoomID* = object
     content*: JsonNode
     eventId*: string
-    originServerTs*: int
+    originServerTs*: int64
     sender*: string
     stateKey*: Option[string]
     `type`*: string
