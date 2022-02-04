@@ -123,6 +123,9 @@ proc newSendMessageRes(res: PureResponse): SendMessageRes =
 proc newRoomStateRes(roomId: string, res: PureResponse): RoomStateRes =
   return RoomStateRes(roomId: roomId, events: res.body.fromJson(seq[ClientEvent]))
 
+proc newRoomMessagesRes(res: PureResponse): RoomMessagesRes =
+  return res.body.fromJson(RoomMessagesRes)
+
 proc getRoomEvent*(
     client: MatrixClient,
     eventId, roomId: string
@@ -188,7 +191,7 @@ proc getRoomMessages*(
   dir: Direction,
   filter, to: string = "",
   limit: int = 10
-): Future[RoomStateRes] {.fastsync.} =
+): Future[RoomMessagesRes] {.fastsync.} =
   let
     req = newRoomMessagesReq(
       client,
@@ -200,4 +203,4 @@ proc getRoomMessages*(
       limit
     )
     res = await client.request(req)
-  return newRoomStateRes(roomId, res)
+  return newRoomMessagesRes(res)
