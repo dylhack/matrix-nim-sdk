@@ -72,7 +72,7 @@ const
     "/rooms/%roomId/state/%eventType/%stateKey",
     HttpPut)
   roomEventPut* = newClDraft(
-    "/rooms/%roomId}/send/%eventType/%txnId",
+    "/rooms/%roomId/send/%eventType/%txnId",
     HttpPut)
 
   ## 9.7 Redactions
