@@ -35,7 +35,7 @@ const
 
   ## 5.8 Current account information
   ## https://matrix.org/docs/spec/client_server/r0.6.1#current-account-information
-  whoAmI* = newClDraft("/account/whoami", HttpGet)
+  whoAmIGet* = newClDraft("/account/whoami", HttpGet)
 
   ## 6 Capabilities negotiation
   ## https://matrix.org/docs/spec/client_server/r0.6.1#capabilities-negotiation
@@ -53,7 +53,7 @@ const
 
   ## 9.4 Syncing
   ## https://matrix.org/docs/spec/client_server/r0.6.1#syncing
-  Sync* = newClDraft("/sync", HttpGet)
+  syncGet* = newClDraft("/sync", HttpGet)
 
   ## 9.5 Getting events for a room
   ## https://matrix.org/docs/spec/client_server/r0.6.1#getting-events-for-a-room
@@ -71,10 +71,12 @@ const
   roomStateEventPut* = newClDraft(
     "/rooms/%roomId/state/%eventType/%stateKey",
     HttpPut)
-  roomEventPut* = newClDraft(
+  roomEventStateKeyPut* = newClDraft(
+    "/rooms/%roomId/send/%eventType/%stateKey",
+    HttpPut)
+  roomEventTxnIdPut* = newClDraft(
     "/rooms/%roomId/send/%eventType/%txnId",
     HttpPut)
-
   ## 9.7 Redactions
   ## https://matrix.org/docs/spec/client_server/r0.6.1#redactions
   eventRedactPut* = newClDraft(
@@ -133,8 +135,8 @@ const
 
   ## 11.2 Profiles
   ## https://matrix.org/docs/spec/client_server/r0.6.1#profiles
-  profileNamePut* = newClDraft("/profile/%userId/displayname", HttpPut)
-  profileNameGet* = newClDraft("/profile/%userId/displayname", HttpGet)
+  displaynamePut* = newClDraft("/profile/%userId/displayname", HttpPut)
+  displaynameGet* = newClDraft("/profile/%userId/displayname", HttpGet)
   profileAvatarPut* = newClDraft("/profile/%userId/avatar_url", HttpPut)
   profileAvatarGet* = newClDraft("/profile/%userId/avatar_url", HttpGet)
   profileGet* = newClDraft("/profile/%userId", HttpGet)
@@ -150,7 +152,7 @@ const
 
   ## 13.4.2 Typing Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id51
-  typingPut* = newClDraft("/rooms/{roomId}/typing/{userId}", HttpPut)
+  typingPut* = newClDraft("/rooms/%roomId/typing/%userId", HttpPut)
 
   ## 13.5.2 Receipts Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id55
@@ -256,7 +258,7 @@ const
 
   ## 13.20.1 Server Administration Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id130
-  whoIs* = newClDraft("/admin/whois/{userId}", HttpGet)
+  whoIs* = newClDraft("/admin/whois/%userId", HttpGet)
 
   ## 13.21.1 Event Context Client behaviour
   ## https://matrix.org/docs/spec/client_server/r0.6.1#id132
@@ -275,7 +277,7 @@ const
   thirdPartyProtocolLocation* = newClDraft(
     "/thirdparty/location/%protocol",
     HttpGet)
-  thirdPartyProtocolUser* = newClDraft("/thirdparty/user/{protocol}", HttpGet)
+  thirdPartyProtocolUser* = newClDraft("/thirdparty/user/%protocol", HttpGet)
   thirdPartyLocation* = newClDraft("/thirdparty/location", HttpGet)
   thirdPartyUser* = newClDraft("/thirdparty/user", HttpGet)
 

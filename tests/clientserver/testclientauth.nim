@@ -42,8 +42,6 @@ suite "5.0 Client Authentication":
         fail()
         echo e.error
 
-
-
   suite "5.6 Account Registration and Management":
     let
       now = toUnixFloat getTime()
@@ -92,6 +90,16 @@ suite "5.0 Client Authentication":
         client.setToken(loginRes.accessToken)
         let resp = client.deactivate(user, pass)
         check resp
+      except MatrixError as e:
+        fail()
+        echo e.error
+
+    test "client can check who am i":
+      try:
+        let loginRes = client.login(user, pass)
+        client.setToken(loginRes.accessToken)
+        let whoAmIResp = client.whoAmI()
+        check whoAmIResp.userId == user
       except MatrixError as e:
         fail()
         echo e.error

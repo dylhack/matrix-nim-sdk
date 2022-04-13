@@ -1,37 +1,37 @@
 ## 5.6 Account registration and management
 ## https://matrix.org/docs/spec/client_server/r0.6.1#account-registration-and-management
-import std/options
-import pkg/jsony
-import shared
-import ../../core
-import ../endpoints
-import ../../asyncutils
+import
+  std/options,
+  ../../core,
+  ../endpoints,
+  ../../asyncutils,
+  types
+include ../../jsonyutils
+
 
 type
-  AccountId = object
-    `type`: string
-    user: string
-  AccountAuth = object of AuthData
-    password: string
-    identifier: AccountId
-  ChangePasswordReq = object
-    new_password: string
-    logout_devices: bool
+  ChangePasswordReq* = object
+    new_password*: string
+    logout_devices*: bool
     auth: AccountAuth
-  DeactivateReq = object
-    id_server: Option[string]
-    auth: AccountAuth
-  RegisterRes = object
+  DeactivateReq* = object
+    id_server*: Option[string]
+    auth*: AccountAuth
+  RegisterRes* = object
     userId*, accessToken*, deviceId*: string
-  RegisterReq = object of RootObj
-    auth: AuthData
-    kind: string
-    password: string
-    device_id: Option[string]
-  RegisterReqName = object of RegisterReq
-    username: Option[string]
-  UsernameAvailableRes = object
-    availability: bool
+  RegisterReq* = object of RootObj
+    auth*: AuthData
+    kind*: string
+    password*: string
+    device_id*: Option[string]
+  RegisterReqName* = object of RegisterReq
+    username*: Option[string]
+  UsernameAvailableRes* = object
+    availability*: bool
+  WhoAmIRes* = object
+    deviceId*: string
+    userId*: string
+
 
 const
   PASS_AUTH = "m.login.password"
@@ -39,8 +39,8 @@ const
 
 proc newRegisterReq(
   client: MatrixClient,
-  username: Option[string],
-  password: string,
+  username: Option[string] = none(string),
+  password: string = "",
   deviceId: Option[string] = none(string)
 ): PureRequest =
   let
@@ -49,13 +49,12 @@ proc newRegisterReq(
       `type`: "m.login.dummy",
       session: none(string)
     )
-    target = accountRegister.build(client.server)
+    target = accountRegister.build(client.server, queryParams = [("kind", kind)])
 
   if username.isSome():
     let payload = RegisterReqName(
       auth: auth,
       device_id: deviceId,
-      kind: kind,
       password: password,
       username: username
     )
@@ -67,7 +66,6 @@ proc newRegisterReq(
     let payload = RegisterReq(
       auth: auth,
       device_id: deviceId,
-      kind: kind,
       password: password,
     )
     return PureRequest(
@@ -98,15 +96,12 @@ proc register*(
 
 proc registerGuest*(
   client: MatrixClient,
-  password: string,
   deviceId: string = ""
 ): Future[RegisterRes] {.fastSync.} =
   let
     device = if len(deviceId) == 0: none(string) else: some(deviceId)
     req = newRegisterReq(
       client,
-      username = none(string),
-      password = password,
       deviceId = device
     )
     res = await client.request(req)
@@ -131,8 +126,8 @@ proc newChangePasswordReq(
         identifier: AccountId(
           `type`: ID_USER_TYPE,
           user: username
+        )
       )
-    )
     )
 
   return PureRequest(
@@ -170,8 +165,7 @@ proc newUserAvailableReq(
   var target = accountAvailability.build(client.server)
   target.addQuery({"username": username})
   return PureRequest(
-    endpoint: target,
-    data: ""
+    endpoint: target
   )
 
 proc newUserAvailableRes(res: PureResponse): bool =
@@ -210,8 +204,8 @@ proc newDeactivateReq(
         identifier: AccountId(
           `type`: ID_USER_TYPE,
           user: username
+        )
       )
-    )
     )
 
   return PureRequest(
@@ -239,3 +233,20 @@ proc deactivate*(
   else:
     discard future
     return true
+
+proc newWhoAmIReq(
+    client: MatrixClient,
+  ): PureRequest =
+  let target = whoAmIGet.build(client.server)
+  return PureRequest(endpoint: target)
+
+proc newWhoAmIRes(res: PureResponse): WhoAmIRes =
+  return res.body.fromJson(WhoAmIRes)
+
+proc whoAmI*(
+  client: MatrixClient,
+): Future[WhoAmIRes] {.fastSync.} =
+  let
+    req = newWhoAmIReq(client)
+    res = await client.request(req)
+  return newWhoAmIRes(res)
