@@ -10,6 +10,4 @@ srcDir = "src"
 requires "nim >= 1.5.1"
 requires "jsony#d0e69bddf83874e15b5c2f52f8b1386ac080b443"
 requires "nodejs"
-
-when defined(js):
-  requires "nodejs >= 16.0.0"
+requires "https://github.com/tandy-1000/asyncutils"
