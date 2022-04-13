@@ -7,3 +7,4 @@ else:
   export asyncdispatch
 
 import pkg/asyncutils
+export asyncutils
