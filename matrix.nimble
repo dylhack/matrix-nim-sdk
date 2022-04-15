@@ -9,6 +9,5 @@ srcDir = "src"
 # Dependencies
 requires "nim >= 1.5.1"
 requires "jsony 1.0.5"
-
-when defined(js):
-  requires "nodejs >= 16.0.0"
+requires "nodejs >= 16.0.0"
+requires "https://github.com/tandy-1000/asyncutils#cc5c590"
