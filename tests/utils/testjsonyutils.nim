@@ -10,4 +10,4 @@ suite "jsonyutils testing":
     check TestRes(testField: "test").toJson() == """{"test_field":"test"}"""
 
   test "snake_case to camelCase":
-    check """{"test_field":"test"}""".fromJson(TestRes)
+    check """{"test_field":"test"}""".fromJson(TestRes) == TestRes(testField: "test")
