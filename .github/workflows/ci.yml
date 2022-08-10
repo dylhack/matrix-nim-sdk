@@ -66,7 +66,7 @@ jobs:
 
       - name: Run C backend tests
         run: |
-          nim c -r tests/testcore.nim
+          nim c -r tests/testutils.nim
           nim c -r tests/testclientserver.nim
 
   test-js:
@@ -95,5 +95,5 @@ jobs:
 
       - name: Run JS backend tests
         run: |
-          nim js tests/testcore.nim
+          nim js tests/testutils.nim
           nim js tests/testclientserver.nim
