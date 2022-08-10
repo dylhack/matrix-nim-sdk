@@ -1,7 +1,8 @@
-import std/[macros, strformat, genasts, httpcore, strutils]
-import ../core
-import ../asyncutils
-include ../jsonyutils
+import
+  std/[macros, strformat, genasts, httpcore, strutils],
+  ../core,
+  ../utils
+include jsonyutils
 
 proc findNamedCommand(body: NimNode, name: string): NimNode =
   for entry in body:

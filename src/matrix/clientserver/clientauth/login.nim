@@ -1,11 +1,10 @@
 import
   std/[httpcore, options],
   ../../core,
-  ../../utils,
+  ../../utils/endgen,
   ../endpoints,
-  ../utils,
   types
-include ../../core/jsonyutils
+include ../../utils/jsonyutils
 
 createRequest logout:
   endpoint:
@@ -17,8 +16,7 @@ createRequest logout:
 createRequest logoutAll:
   endpoint:
     endpoints.logoutAll
-  output:
-    bool
+  output: bool
   responseHandler:
     result = response.code.is2xx()
 
