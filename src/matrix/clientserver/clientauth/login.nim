@@ -1,20 +1,20 @@
 import
   std/[httpcore, options],
   ../../core,
-  ../../utils/endgen,
+  ../../utils,
   ../endpoints,
   types
 include ../../utils/jsonyutils
 
 createRequest logout:
-  endpoint:
+  endPoint:
     endpoints.logout
   output: bool
   responseHandler:
     result = response.code.is2xx()
 
 createRequest logoutAll:
-  endpoint:
+  endPoint:
     endpoints.logoutAll
   output: bool
   responseHandler:
