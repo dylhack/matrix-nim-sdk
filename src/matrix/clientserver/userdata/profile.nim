@@ -3,7 +3,7 @@ import
   ../../core,
   ../../utils,
   ../endpoints
-include ../../core/jsonyutils
+include ../../utils/jsonyutils
 
 
 type

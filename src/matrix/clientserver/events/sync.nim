@@ -4,7 +4,7 @@ import
   ../../utils,
   ../endpoints,
   types
-include ../../core/jsonyutils
+include ../../utils/jsonyutils
 
 
 type
