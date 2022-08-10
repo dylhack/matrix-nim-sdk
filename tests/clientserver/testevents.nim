@@ -1,6 +1,7 @@
-import std/unittest
-import ../config
-import matrix
+import
+  std/unittest,
+  pkg/matrix,
+  ../config
 
 let
   username = getUsername()
@@ -84,4 +85,3 @@ suite "Events":
       except MatrixError as e:
         fail()
         echo e.error
-

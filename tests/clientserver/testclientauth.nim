@@ -1,6 +1,7 @@
-import std/[strformat, times, unittest]
-import ../config
-import matrix
+import
+  std/[strformat, times, unittest],
+  pkg/matrix,
+  ../config
 
 let
   username = getUsername()
