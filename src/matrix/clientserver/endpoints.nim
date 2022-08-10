@@ -1,6 +1,6 @@
 from std/httpcore import HttpMethod
 from std/strformat import fmt
-import ../core
+import ../utils
 
 const prefix = "/_matrix/client/r0"
 
