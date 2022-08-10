@@ -1,3 +1,3 @@
-import core/[client, endutils]
+import core/client
 
-export client, endutils
+export client

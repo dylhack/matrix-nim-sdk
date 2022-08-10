@@ -5,9 +5,9 @@ import
   std/[dom, strformat, uri, jsheaders, httpcore],
   pkg/nodejs/jshttpclient,
   pure,
-  ../endutils,
-  ../../asyncutils
-include ../../jsonyutils
+  ../../utils/endutils,
+  ../../utils/asyncutils
+include ../../utils/jsonyutils
 
 
 type

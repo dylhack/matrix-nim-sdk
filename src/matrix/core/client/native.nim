@@ -4,10 +4,10 @@
 ## using the multisync pragma.
 import
   std/[os, httpclient, httpcore, uri],
-  ../endutils,
   pure,
-  ../../asyncutils
-include ../../jsonyutils
+  ../../utils/endutils,
+  ../../utils/asyncutils
+include ../../utils/jsonyutils
 
 
 type

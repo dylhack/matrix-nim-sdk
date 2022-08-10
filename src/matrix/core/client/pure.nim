@@ -4,9 +4,8 @@ when defined(js):
   import std/jsheaders
 import
   std/[uri, strformat, httpcore],
-  ../endutils
-include ../../jsonyutils
-
+  ../../utils/endutils
+include ../../utils/jsonyutils
 
 type
   MatrixErrorRaw* = object of RootObj
