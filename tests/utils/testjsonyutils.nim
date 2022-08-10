@@ -1,5 +1,5 @@
-import unittest
-include matrix/jsonyutils
+import std/unittest
+include pkg/matrix/utils/jsonyutils
 
 type
   TestRes = object
@@ -11,5 +11,3 @@ suite "jsonyutils testing":
 
   test "snake_case to camelCase":
     check """{"test_field":"test"}""".fromJson(TestRes)
-
-

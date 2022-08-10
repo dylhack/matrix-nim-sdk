@@ -1,7 +1,7 @@
-import unittest
-import strformat
-import matrix/core/endutils
-import matrix/clientserver/endpoints
+import
+  std/[unittest, strformat],
+  pkg/matrix/utils/endutils,
+  pkg/matrix/clientserver/endpoints
 
 suite "endutils testing":
   const server = "https://newcircuit.io"
