@@ -3,15 +3,14 @@ import
   pkg/matrix,
   ../config
 
-let
-  username = getUsername()
-  password = getPassword()
-  homeserver = getServer()
-
-let client = newMatrixClient(homeserver)
-
 suite "Events":
   setup:
+    let
+      username = getUsername()
+      password = getPassword()
+      homeserver = getServer()
+      client = newMatrixClient(homeserver)
+
     try:
       let loginRes = client.login(username, password)
       client.setToken(loginRes.accessToken)

@@ -3,14 +3,14 @@ import
   pkg/matrix,
   ../config
 
-let
-  username = getUsername()
-  password = getPassword()
-  homeserver = getServer()
-
-let client = newMatrixClient(homeserver)
-
 suite "5.0 Client Authentication":
+  setup:
+    let
+      username = getUsername()
+      password = getPassword()
+      homeserver = getServer()
+      client = newMatrixClient(homeserver)
+
   teardown:
     client.dropToken()
 
