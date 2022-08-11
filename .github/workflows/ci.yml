@@ -65,7 +65,7 @@ jobs:
         run: nimble install -Y
 
       - name: Run C backend tests
-        run: nimble c tests/testall.nim
+        run: nimble c -r tests/testall.nim
 
   test-js:
     # The type of runner that the job will run on
@@ -91,5 +91,5 @@ jobs:
       - name: Install package
         run: nimble install -Y
 
-      - name: Run JS backend tests
+      - name: Build JS backend tests
         run: nimble js tests/testall.nim
