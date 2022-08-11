@@ -1,4 +1,4 @@
-import
+include
   clientserver/testclientauth,
   clientserver/testevents,
   clientserver/testrooms,
