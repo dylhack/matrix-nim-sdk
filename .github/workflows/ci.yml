@@ -61,13 +61,11 @@ jobs:
           # Whether the compiler should be added to PATH
           add-to-path: true # optional, default is true
 
-      - name: Get dependencies
-        run: nimble install -d -Y
+      - name: Install package
+        run: nimble install -Y
 
       - name: Run C backend tests
-        run: |
-          nim c -r tests/testutils.nim
-          nim c -r tests/testclientserver.nim
+        run: nimble c tests/testall.nim
 
   test-js:
     # The type of runner that the job will run on
@@ -90,10 +88,8 @@ jobs:
           # Whether the compiler should be added to PATH
           add-to-path: true # optional, default is true
 
-      - name: Get dependencies
-        run: nimble install -d -Y
+      - name: Install package
+        run: nimble install -Y
 
       - name: Run JS backend tests
-        run: |
-          nim js tests/testutils.nim
-          nim js tests/testclientserver.nim
+        run: nimble js tests/testall.nim
