@@ -1,5 +1,5 @@
 import
-  std/unittest,
+  std/[unittest, json],
   pkg/matrix,
   ../config
 
@@ -47,7 +47,7 @@ suite "Events":
         let
           eventType = "test"
           roomId = "matrix:matrix.org"
-          event = RoomEvent()
+          event = JsonNode()
           res = client.sendRoomEvent(eventType, roomId, event)
       except MatrixError as e:
         fail()
